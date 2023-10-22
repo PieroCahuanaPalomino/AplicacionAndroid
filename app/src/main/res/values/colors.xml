@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#039BE5</color>
+    <color name="colorPrimaryDark">#2C384A</color>
+    <color name="colorAccent">#039be5</color>
+    <color name="background">#ECEFF1</color>
+
+    <color name="bluePalet">#000080</color>
+    <color name="bluePaletLet">#4065fc</color>
+    <color name="fonPantalla">#FFFFFF</color>
+    <color name="grisPaletLet">#8a8b8d</color>
+    <color name="redPaletCircle">#f25b5b</color>
 </resources>
