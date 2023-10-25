@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.google.relay.compose.RelayContainer
+import com.project.condosa.R
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -97,7 +99,8 @@ fun GastosPredio(
         }
 
         // Tabla de gastos (LazyColumn)
-        Box (modifier=Modifier.padding(horizontal = 10.dp)
+        Box (modifier= Modifier
+            .padding(horizontal = 10.dp)
             .clip(RoundedCornerShape(4))){
             Box(
                 modifier = Modifier
@@ -191,7 +194,8 @@ fun GastosPredio(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 15.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
 
@@ -216,15 +220,16 @@ fun GastosPredio(
                 onClick = {
                     /* Acción para descargar */
                 },
-                contentPadding = PaddingValues(all = 3.dp),
+                contentPadding = PaddingValues(all = 2.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.padding(8.dp),
                 content = {
                     Icon(
+                        //imageVector = painterResource(id = R.drawable.download_24px),
                         imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = "Descargar",
-                        tint = Color.Blue // Color azul
+                        tint = Color(0xFF000080) // Color azul
                     )
                 }
             )
@@ -234,7 +239,7 @@ fun GastosPredio(
                 onClick = {
                     /* Acción para descargar */
                 },
-                contentPadding = PaddingValues(all = 3.dp),
+                contentPadding = PaddingValues(all = 2.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.padding(8.dp),
@@ -242,30 +247,50 @@ fun GastosPredio(
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = "Compartir",
-                        tint = Color.Blue // Color azul
+                        tint = Color(0xFF000080) // Color azul
                     )
                 }
             )
         }
 
-    }
-}
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Botón "Cancelar"
+            Button(
+                onClick = { /* Acciones */ },
+                contentPadding = PaddingValues(horizontal = 35.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                //modifier = Modifier.padding(top = 8.dp),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Cancelar", color = Color.White,fontFamily = poppins,)
+                }
+            }
 
-@Composable
-fun botonAdd(onClick: () -> Unit) {
-    Button(
-        onClick = { onClick() },
-        //colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-        contentPadding = PaddingValues(all = 12.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.AddCircle, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Añadir gasto", color = Color.White)
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Botón "Finalizar Registros"
+            Button(
+                onClick = { /* Acciones */ },
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                //modifier = Modifier.padding(top = 8.dp),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Finalizar Registros", color = Color.White,fontFamily = poppins,)
+                }
+            }
         }
+
     }
 }
-
 
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
