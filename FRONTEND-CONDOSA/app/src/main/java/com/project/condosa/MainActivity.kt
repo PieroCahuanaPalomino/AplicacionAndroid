@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
 import com.project.condosa.ui.theme.CondosaTheme
 
 
@@ -26,8 +27,9 @@ class MainActivity : ComponentActivity() {
                     Greeting("Android Rama")
 
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-                    HomeContent("user@email.com", "Some Provider")
-                    View("User Name", "user@email.com", "Some Provider")
+                    //HomeContent("user@email.com", "Some Provider")
+                    //View("User Name", "user@email.com", "Some Provider")
+                    GastosPredio(name="Los Rosales", period = "2023-I")
                 }
             }
         }
@@ -46,7 +48,8 @@ fun GreetingPreview() {
     CondosaTheme {
         //Greeting("Android")
         //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-        HomeContent("user@email.com", "Some Provider")
-        View("User Name", "user@email.com", "Some Provider")
+        //HomeContent("user@email.com", "Some Provider")
+        //View("User Name", "user@email.com", "Some Provider")
+        GastosPredio(name="Los Rosales", period = "2023-I")
     }
 }
