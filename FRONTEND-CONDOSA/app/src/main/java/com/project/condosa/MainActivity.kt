@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.project.condosa.ui.theme.CondosaTheme
+import com.project.condosa.ui.components.view.Gastos_Agregar.GastoAgregar
+
 
 
 import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
@@ -22,12 +24,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             CondosaTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android Rama")
+                /*
+                * Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    //Greeting("Android Rama")
 
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-                    HomeContent("user@email.com", "Some Provider")
-                    View("User Name", "user@email.com", "Some Provider")
+                   // HomeContent("user@email.com", "Some Provider")
+                    //View("User Name", "user@email.com", "Some Provider")
+                    GastoAgregar()
+                }
+
+                * */
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ){
+                    GastoAgregar()
                 }
             }
         }
@@ -46,7 +58,8 @@ fun GreetingPreview() {
     CondosaTheme {
         //Greeting("Android")
         //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-        HomeContent("user@email.com", "Some Provider")
-        View("User Name", "user@email.com", "Some Provider")
+        //HomeContent("user@email.com", "Some Provider")
+        //View("User Name", "user@email.com", "Some Provider")
+        GastoAgregar()
     }
 }
