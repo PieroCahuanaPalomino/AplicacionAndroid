@@ -20,10 +20,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -185,13 +187,85 @@ fun GastosPredio(
                         }
                     }
                 }
-
             }
         }
 
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 15.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+
+            ) {
+            //Boton para añadir gastos
+            Button(
+                onClick = { /* Acciones */ },
+                contentPadding = PaddingValues(horizontal = 9.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                modifier = Modifier.padding(top = 8.dp),
+                shape = RoundedCornerShape(10.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Filled.AddCircle, contentDescription = "Agregar Gastos")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Añadir gasto", color = Color.White,fontFamily = poppins,)
+                }
+            }
+
+            // Botón de Descargar
+            Button(
+                onClick = {
+                    /* Acción para descargar */
+                },
+                contentPadding = PaddingValues(all = 3.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.padding(8.dp),
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Descargar",
+                        tint = Color.Blue // Color azul
+                    )
+                }
+            )
+
+            // Botón de Compartir
+            Button(
+                onClick = {
+                    /* Acción para descargar */
+                },
+                contentPadding = PaddingValues(all = 3.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.padding(8.dp),
+                content = {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Compartir",
+                        tint = Color.Blue // Color azul
+                    )
+                }
+            )
+        }
 
     }
 }
+
+@Composable
+fun botonAdd(onClick: () -> Unit) {
+    Button(
+        onClick = { onClick() },
+        //colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
+        contentPadding = PaddingValues(all = 12.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Filled.AddCircle, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Añadir gasto", color = Color.White)
+        }
+    }
+}
+
 
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
