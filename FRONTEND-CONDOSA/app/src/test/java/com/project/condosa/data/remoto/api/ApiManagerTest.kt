@@ -1,14 +1,11 @@
 package com.project.condosa.data.remoto.api
 
 
-import com.project.condosa.domain.model.ApiResponse
-import kotlinx.coroutines.runBlocking
+
 import org.junit.Assert
 
 import org.junit.Test
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 
 class ApiManagerTest {
