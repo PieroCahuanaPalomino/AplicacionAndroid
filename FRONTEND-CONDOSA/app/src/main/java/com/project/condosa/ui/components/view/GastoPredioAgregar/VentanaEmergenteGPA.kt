@@ -32,6 +32,7 @@ import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.project.condosa.R
 
+
 @Composable
 fun GastoPredioagregar(modifier: Modifier = Modifier) {
     TopLevel(modifier = modifier) {
