@@ -1,10 +1,8 @@
-package com.project.condosa.ui.components.view.GastoPredioAgregar
+package com.project.condosa.ui.components.view.GastoPredioEditar
 
-import com.project.condosa.R
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -31,11 +29,13 @@ import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
+import com.project.condosa.R
+import com.project.condosa.ui.components.view.GastoPredioAgregar.Rectangle52
 
 @Composable
-fun GastoPredioagregar(modifier: Modifier = Modifier) {
+fun GastoPredioeditar(modifier: Modifier = Modifier) {
     TopLevel(modifier = modifier) {
-        Rectangle52(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+        Group7 {
             Rectangle53(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.Center,
@@ -45,61 +45,21 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                     )
                 )
             )
-            GastosComunes(
+            EditarGasto(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.Center,
                     offset = DpOffset(
                         x = 0.0.dp,
-                        y = -148.0.dp
+                        y = -146.0.dp
                     )
                 )
             )
-            Boton(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.Center,
-                    offset = DpOffset(
-                        x = 65.5.dp,
-                        y = 145.5.dp
-                    )
-                )
-            ) {
-                Rectangle44(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                Boton2(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = -0.5.dp,
-                            y = 0.5.dp
-                        )
-                    )
-                )
-            }
-            Boton1(
-                modifier = Modifier.boxAlign(
-                    alignment = Alignment.Center,
-                    offset = DpOffset(
-                        x = -68.5.dp,
-                        y = 145.5.dp
-                    )
-                )
-            ) {
-                Rectangle45(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
-                Boton3(
-                    modifier = Modifier.boxAlign(
-                        alignment = Alignment.Center,
-                        offset = DpOffset(
-                            x = 0.0.dp,
-                            y = 0.5.dp
-                        )
-                    )
-                )
-            }
-            Frame9(
+            Frame8(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.Center,
                     offset = DpOffset(
                         x = 0.0.dp,
-                        y = 91.0.dp
+                        y = 14.0.dp
                     )
                 )
             ) {
@@ -114,7 +74,7 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                         )
                     ) {
                         Frame1Synth {
-                            Rectangle46()
+                            Rectangle45()
                         }
                     }
                     TITULO(
@@ -145,15 +105,26 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                         )
                     ) {
                         SeleccionaUnaOpciN()
+                        ChevronDownOutline {
+                            Vector2(
+                                modifier = Modifier.boxAlign(
+                                    alignment = Alignment.TopStart,
+                                    offset = DpOffset(
+                                        x = -0.75.dp,
+                                        y = -0.75.dp
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
             }
-            Frame8(
+            Frame9(
                 modifier = Modifier.boxAlign(
                     alignment = Alignment.Center,
                     offset = DpOffset(
                         x = 0.0.dp,
-                        y = 14.0.dp
+                        y = 91.0.dp
                     )
                 )
             ) {
@@ -168,7 +139,7 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                         )
                     ) {
                         Frame1Synth1 {
-                            Rectangle47()
+                            Rectangle46()
                         }
                     }
                     TITULO1(
@@ -199,17 +170,6 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                         )
                     ) {
                         SeleccionaUnaOpciN1()
-                        ChevronDownOutline1 {
-                            Vector4(
-                                modifier = Modifier.boxAlign(
-                                    alignment = Alignment.TopStart,
-                                    offset = DpOffset(
-                                        x = -0.75.dp,
-                                        y = -0.75.dp
-                                    )
-                                )
-                            )
-                        }
                     }
                 }
             }
@@ -233,7 +193,7 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                         )
                     ) {
                         Frame1Synth2 {
-                            Rectangle48()
+                            Rectangle47()
                         }
                     }
                     TITULO2(
@@ -287,56 +247,100 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
                     )
                 )
             ) {
-                Vector7(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                Vector7(
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.Center,
+                        offset = DpOffset(
+                            x = 0.0.dp,
+                            y = 0.0.dp
+                        )
+                    )
+                )
             }
             Cost(
                 modifier = Modifier.boxAlign(
-                    alignment = Alignment.TopStart,
+                    alignment = Alignment.Center,
                     offset = DpOffset(
-                        x = 48.0.dp,
-                        y = 84.0.dp
+                        x = -110.0.dp,
+                        y = -84.0.dp
                     )
                 )
             )
-            Vector(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+            Vector(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.Center,
+                    offset = DpOffset(
+                        x = -111.5.dp,
+                        y = 3.0.dp
+                    )
+                )
+            )
+            Boton(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.Center,
+                    offset = DpOffset(
+                        x = 65.5.dp,
+                        y = 145.5.dp
+                    )
+                )
+            ) {
+                Rectangle44(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                Boton2(
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.Center,
+                        offset = DpOffset(
+                            x = 0.0.dp,
+                            y = 0.5.dp
+                        )
+                    )
+                )
+            }
+            Boton1(
+                modifier = Modifier.boxAlign(
+                    alignment = Alignment.Center,
+                    offset = DpOffset(
+                        x = -68.5.dp,
+                        y = 145.5.dp
+                    )
+                )
+            ) {
+                Rectangle48(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+                Boton3(
+                    modifier = Modifier.boxAlign(
+                        alignment = Alignment.Center,
+                        offset = DpOffset(
+                            x = 0.0.dp,
+                            y = 0.5.dp
+                        )
+                    )
+                )
+            }
         }
+    }
 }
 
 @Preview(widthDp = 356, heightDp = 371)
 @Composable
-private fun GastoPredioagregarPreview() {
+private fun GastoPredioeditarPreview() {
     MaterialTheme {
         RelayContainer {
-            GastoPredioagregar(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
+            GastoPredioeditar(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
         }
     }
 }
-@Composable
-fun Rectangle52(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.gasto_editar_rectangle_52),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 19.0.dp,
-                top = 0.0.dp,
-                end = 19.0.dp,
-                bottom = 0.0.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
+
 @Composable
 fun Rectangle53(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_rectangle_53),
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_53),
         modifier = modifier.requiredWidth(318.0.dp).requiredHeight(371.0.dp)
     )
 }
 
 @Composable
-fun GastosComunes(modifier: Modifier = Modifier) {
+fun EditarGasto(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Gastos Comunes",
+        content = "Editar Gasto",
         fontSize = 18.0.sp,
         fontFamily = poppins,
         color = Color(
@@ -353,87 +357,9 @@ fun GastosComunes(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Rectangle44(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_rectangle_44),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Boton2(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Añadir",
-        fontSize = 12.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)
-    )
-}
-
-@Composable
-fun Boton(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        clipToParent = false,
-        content = content,
-        modifier = modifier.requiredWidth(109.0.dp).requiredHeight(32.0.dp)
-    )
-}
-
-@Composable
 fun Rectangle45(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_rectangle_45),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
-    )
-}
-
-@Composable
-fun Boton3(modifier: Modifier = Modifier) {
-    RelayText(
-        content = "Cancelar",
-        fontSize = 12.0.sp,
-        fontFamily = inter,
-        color = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
-        height = 1.2102272510528564.em,
-        fontWeight = FontWeight(700.0.toInt()),
-        modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)
-    )
-}
-
-@Composable
-fun Boton1(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        isStructured = false,
-        clipToParent = false,
-        content = content,
-        modifier = modifier.requiredWidth(111.0.dp).requiredHeight(32.0.dp)
-    )
-}
-
-@Composable
-fun Rectangle46(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.gasto_editar_rectangle_47),
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_45),
         modifier = modifier.requiredWidth(46.0.dp).requiredHeight(46.0.dp)
     )
 }
@@ -470,7 +396,7 @@ fun Frame1(
 @Composable
 fun TITULO(modifier: Modifier = Modifier) {
     RelayText(
-        content = "IMPORTE TOTAL",
+        content = "DESCRIPCIÓN",
         fontFamily = poppins,
         color = Color(
             alpha = 255,
@@ -489,7 +415,7 @@ fun TITULO(modifier: Modifier = Modifier) {
 @Composable
 fun Line8(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_line_8),
+        vector = painterResource(R.drawable.gasto_predioeditar_line_8),
         modifier = modifier.requiredWidth(190.62498474121094.dp).requiredHeight(0.0.dp)
     )
 }
@@ -497,7 +423,7 @@ fun Line8(modifier: Modifier = Modifier) {
 @Composable
 fun SeleccionaUnaOpciN(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Digite el monto (S/)",
+        content = "Planilla",
         fontSize = 12.0.sp,
         fontFamily = poppins,
         color = Color(
@@ -508,10 +434,37 @@ fun SeleccionaUnaOpciN(modifier: Modifier = Modifier) {
         ),
         height = 1.5.em,
         textAlign = TextAlign.Left,
-        fontWeight = FontWeight(300.0.toInt()),
-        italic = true,
+        fontWeight = FontWeight(600.0.toInt()),
         maxLines = -1,
         modifier = modifier.requiredWidth(171.0.dp)
+    )
+}
+
+@Composable
+fun Vector2(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.gasto_predioeditar_vector1),
+        modifier = modifier.requiredWidth(13.5.dp).requiredHeight(6.75.dp)
+    )
+}
+
+@Composable
+fun ChevronDownOutline(
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        mainAxisAlignment = MainAxisAlignment.Start,
+        crossAxisAlignment = CrossAxisAlignment.Start,
+        padding = PaddingValues(
+            start = 5.0.dp,
+            top = 6.0.dp,
+            end = 5.0.dp,
+            bottom = 6.0.dp
+        ),
+        itemSpacing = 10.0,
+        content = content,
+        modifier = modifier
     )
 }
 
@@ -521,12 +474,6 @@ fun FrameElegirOpciones(
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
-        backgroundColor = Color(
-            alpha = 255,
-            red = 255,
-            green = 255,
-            blue = 255
-        ),
         mainAxisAlignment = MainAxisAlignment.Start,
         crossAxisAlignment = CrossAxisAlignment.Start,
         arrangement = RelayContainerArrangement.Row,
@@ -558,7 +505,7 @@ fun Group2(
 }
 
 @Composable
-fun Frame9(
+fun Frame8(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
@@ -579,9 +526,9 @@ fun Frame9(
 }
 
 @Composable
-fun Rectangle47(modifier: Modifier = Modifier) {
+fun Rectangle46(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_editar_rectangle_46),
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_46),
         modifier = modifier.requiredWidth(46.0.dp).requiredHeight(46.0.dp)
     )
 }
@@ -618,7 +565,7 @@ fun Frame2(
 @Composable
 fun TITULO1(modifier: Modifier = Modifier) {
     RelayText(
-        content = "DESCRIPCIÓN",
+        content = "IMPORTE TOTAL",
         fontFamily = poppins,
         color = Color(
             alpha = 255,
@@ -637,7 +584,7 @@ fun TITULO1(modifier: Modifier = Modifier) {
 @Composable
 fun Line9(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_line_9),
+        vector = painterResource(R.drawable.gasto_predioeditar_line_9),
         modifier = modifier.requiredWidth(190.62498474121094.dp).requiredHeight(0.0.dp)
     )
 }
@@ -645,8 +592,8 @@ fun Line9(modifier: Modifier = Modifier) {
 @Composable
 fun SeleccionaUnaOpciN1(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Selecciona una  opción",
-        fontSize = 12.0.sp,
+        content = "100",
+        fontSize = 13.0.sp,
         fontFamily = poppins,
         color = Color(
             alpha = 255,
@@ -656,38 +603,9 @@ fun SeleccionaUnaOpciN1(modifier: Modifier = Modifier) {
         ),
         height = 1.5.em,
         textAlign = TextAlign.Left,
-        fontWeight = FontWeight(300.0.toInt()),
-        italic = true,
+        fontWeight = FontWeight(600.0.toInt()),
         maxLines = -1,
         modifier = modifier.requiredWidth(171.0.dp)
-    )
-}
-
-@Composable
-fun Vector4(modifier: Modifier = Modifier) {
-    RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_vector1),
-        modifier = modifier.requiredWidth(13.5.dp).requiredHeight(6.75.dp)
-    )
-}
-
-@Composable
-fun ChevronDownOutline1(
-    modifier: Modifier = Modifier,
-    content: @Composable RelayContainerScope.() -> Unit
-) {
-    RelayContainer(
-        mainAxisAlignment = MainAxisAlignment.Start,
-        crossAxisAlignment = CrossAxisAlignment.Start,
-        padding = PaddingValues(
-            start = 5.0.dp,
-            top = 6.0.dp,
-            end = 5.0.dp,
-            bottom = 6.0.dp
-        ),
-        itemSpacing = 10.0,
-        content = content,
-        modifier = modifier
     )
 }
 
@@ -697,6 +615,12 @@ fun FrameElegirOpciones1(
     content: @Composable RelayContainerScope.() -> Unit
 ) {
     RelayContainer(
+        backgroundColor = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
         mainAxisAlignment = MainAxisAlignment.Start,
         crossAxisAlignment = CrossAxisAlignment.Start,
         arrangement = RelayContainerArrangement.Row,
@@ -728,7 +652,7 @@ fun Group3(
 }
 
 @Composable
-fun Frame8(
+fun Frame9(
     modifier: Modifier = Modifier,
     content: @Composable RelayContainerScope.() -> Unit
 ) {
@@ -749,9 +673,9 @@ fun Frame8(
 }
 
 @Composable
-fun Rectangle48(modifier: Modifier = Modifier) {
+fun Rectangle47(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_editar_rectangle_45),
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_47),
         modifier = modifier.requiredWidth(46.0.dp).requiredHeight(46.0.dp)
     )
 }
@@ -807,7 +731,7 @@ fun TITULO2(modifier: Modifier = Modifier) {
 @Composable
 fun Line10(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_line_10),
+        vector = painterResource(R.drawable.gasto_predioeditar_line_10),
         modifier = modifier.requiredWidth(190.62498474121094.dp).requiredHeight(0.0.dp)
     )
 }
@@ -815,7 +739,7 @@ fun Line10(modifier: Modifier = Modifier) {
 @Composable
 fun SeleccionaUnaOpciN2(modifier: Modifier = Modifier) {
     RelayText(
-        content = "Selecciona una  opción",
+        content = "Administrativo y Conta.",
         fontSize = 12.0.sp,
         fontFamily = poppins,
         color = Color(
@@ -826,8 +750,7 @@ fun SeleccionaUnaOpciN2(modifier: Modifier = Modifier) {
         ),
         height = 1.5.em,
         textAlign = TextAlign.Left,
-        fontWeight = FontWeight(300.0.toInt()),
-        italic = true,
+        fontWeight = FontWeight(600.0.toInt()),
         maxLines = -1,
         modifier = modifier.requiredWidth(171.0.dp)
     )
@@ -836,7 +759,7 @@ fun SeleccionaUnaOpciN2(modifier: Modifier = Modifier) {
 @Composable
 fun Vector6(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_vector2),
+        vector = painterResource(R.drawable.gasto_predioeditar_vector2),
         modifier = modifier.requiredWidth(13.5.dp).requiredHeight(6.75.dp)
     )
 }
@@ -921,8 +844,8 @@ fun Frame7(
 @Composable
 fun Vector7(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_vector3),
-        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        vector = painterResource(R.drawable.gasto_predioeditar_vector3),
+        modifier = modifier.requiredWidth(36.0.dp).requiredHeight(37.0.dp)
     )
 }
 
@@ -942,7 +865,7 @@ fun IconHandHoldingUSDollar(
 @Composable
 fun Cost(modifier: Modifier = Modifier) {
     RelayImage(
-        image = painterResource(R.drawable.gasto_predioagregar_cost),
+        image = painterResource(R.drawable.gasto_predioeditar_cost),
         contentScale = ContentScale.Fit,
         modifier = modifier.requiredWidth(38.0.dp).requiredHeight(43.0.dp)
     )
@@ -951,15 +874,86 @@ fun Cost(modifier: Modifier = Modifier) {
 @Composable
 fun Vector(modifier: Modifier = Modifier) {
     RelayVector(
-        vector = painterResource(R.drawable.gasto_predioagregar_vector),
-        modifier = modifier.padding(
-            paddingValues = PaddingValues(
-                start = 49.0.dp,
-                top = 171.0.dp,
-                end = 272.0.dp,
-                bottom = 165.0.dp
-            )
-        ).fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+        vector = painterResource(R.drawable.gasto_predioeditar_vector),
+        modifier = modifier.requiredWidth(35.0.dp).requiredHeight(35.0.dp)
+    )
+}
+
+@Composable
+fun Rectangle44(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_44),
+        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Boton2(modifier: Modifier = Modifier) {
+    RelayText(
+        content = "Actualizar",
+        fontSize = 12.0.sp,
+        fontFamily = inter,
+        color = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
+        height = 1.2102272510528564.em,
+        fontWeight = FontWeight(700.0.toInt()),
+        modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)
+    )
+}
+
+@Composable
+fun Boton(
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        clipToParent = false,
+        content = content,
+        modifier = modifier.requiredWidth(109.0.dp).requiredHeight(32.0.dp)
+    )
+}
+
+@Composable
+fun Rectangle48(modifier: Modifier = Modifier) {
+    RelayVector(
+        vector = painterResource(R.drawable.gasto_predioeditar_rectangle_48),
+        modifier = modifier.fillMaxWidth(1.0f).fillMaxHeight(1.0f)
+    )
+}
+
+@Composable
+fun Boton3(modifier: Modifier = Modifier) {
+    RelayText(
+        content = "Cancelar",
+        fontSize = 12.0.sp,
+        fontFamily = inter,
+        color = Color(
+            alpha = 255,
+            red = 255,
+            green = 255,
+            blue = 255
+        ),
+        height = 1.2102272510528564.em,
+        fontWeight = FontWeight(700.0.toInt()),
+        modifier = modifier.wrapContentHeight(align = Alignment.CenterVertically)
+    )
+}
+
+@Composable
+fun Boton1(
+    modifier: Modifier = Modifier,
+    content: @Composable RelayContainerScope.() -> Unit
+) {
+    RelayContainer(
+        isStructured = false,
+        clipToParent = false,
+        content = content,
+        modifier = modifier.requiredWidth(111.0.dp).requiredHeight(32.0.dp)
     )
 }
 
