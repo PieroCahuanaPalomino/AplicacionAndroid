@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
 import com.project.condosa.ui.components.view.GastoPredioAgregar.GastoPredioagregar
+import com.project.condosa.ui.components.view.GastoPredioEditar.GastoPredioeditar
 import com.project.condosa.ui.theme.CondosaTheme
 import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
 import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
@@ -51,6 +52,6 @@ fun GreetingPreview() {
         //HomeContent("user@email.com", "Some Provider")
         //View("User Name", "user@email.com", "Some Provider")
         //GastosPredio(name="Los Rosales", period = "2023-I")
-        GastoPredioagregar()
+        GastoPredioeditar()
     }
 }
