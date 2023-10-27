@@ -5,3 +5,4 @@ data class ApiResponse(
     val predios: List<Predio>,
     val success: Boolean
 )
+

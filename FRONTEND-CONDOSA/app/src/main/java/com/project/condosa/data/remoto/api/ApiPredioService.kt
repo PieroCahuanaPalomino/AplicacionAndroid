@@ -5,6 +5,11 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface ApiPredioService {
-    @GET("/getPredios")
+    @GET("getPredios")
     fun getPredios(): Call<ApiResponse> // ApiResponse es la clase que definimos anteriormente para modelar la respuesta
 }
+
+
+
+
+

@@ -5,3 +5,4 @@ data class Predio(
     val predio: String,
     val responsable: String
 )
+
