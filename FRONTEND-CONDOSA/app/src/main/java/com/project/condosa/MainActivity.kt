@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
+import com.project.condosa.ui.components.view.Gastos_casa.GastosContent
+import com.project.condosa.ui.components.view.Gastos_casa.ViewGastos
 import com.project.condosa.ui.theme.CondosaTheme
 import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
 import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
@@ -27,7 +29,10 @@ class MainActivity : ComponentActivity() {
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
                     //HomeContent("user@email.com", "Some Provider")
                     //View("User Name", "user@email.com", "Some Provider")
-                    GastosPredio(name="Los Rosales", period = "2023-I")
+                    //GastosPredio(name="Los Rosales", period = "2023-I")
+                    GastosContent("user@email.com", "Some Provider")
+                    ViewGastos("User Name", "user@email.com", "Some Provider")
+
                 }
             }
         }
@@ -48,6 +53,8 @@ fun GreetingPreview() {
         //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
         //HomeContent("user@email.com", "Some Provider")
         //View("User Name", "user@email.com", "Some Provider")
-        GastosPredio(name="Los Rosales", period = "2023-I")
+        //GastosPredio(name="Los Rosales", period = "2023-I")
+        GastosContent("user@email.com", "Some Provider")
+        ViewGastos("User Name", "user@email.com", "Some Provider")
     }
 }
