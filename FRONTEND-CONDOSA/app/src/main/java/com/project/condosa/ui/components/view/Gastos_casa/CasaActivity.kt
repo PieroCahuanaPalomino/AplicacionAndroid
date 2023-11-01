@@ -206,7 +206,7 @@ fun ViewGastos(
 
 
 @Composable
-fun MostrarDataGastos(elemento: String = "-") {
+fun MostrarDataGastos(nom_prop: String = "Manuel Avila", estado: String = "Activo") {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
 
@@ -227,7 +227,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text(nom_prop, fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Column(
@@ -240,7 +240,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text(estado, fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Box(
