@@ -393,7 +393,7 @@ fun IconWithComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId:
     }
 
     val options = if (prediosResponse != null) {
-        listOf("Opción 1", "Opción 2")
+        listOf("Opción 1", "Opción 2","Opción 3", "Opción 4", "Opción 5",)
     } else {
         listOf("Opción 1", "Opción 2", "Opción 3")
     }
