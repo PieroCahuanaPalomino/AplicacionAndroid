@@ -1,12 +1,12 @@
-package com.project.condosa.data.remoto.api
+package com.project.condosa.data.remoto.ObjectRetrofit
 
+import com.project.condosa.data.remoto.api.ApiPredioService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object RetrofitClient {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:5000/")
+        .baseUrl("https://apimocha.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

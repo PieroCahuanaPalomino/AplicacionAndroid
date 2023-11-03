@@ -2,13 +2,18 @@ package com.project.condosa.data.remoto.api
 
 
 
+import androidx.lifecycle.LifecycleOwner
+import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
+import com.project.condosa.data.remoto.ObjectRetrofit.RetrofitClient
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
+import org.junit.Assert.assertTrue
 
 import org.junit.Test
 
 
 
-class ApiManagerTest {
+class ApiManagerTest{
 /*
     @Test
     fun retro(){

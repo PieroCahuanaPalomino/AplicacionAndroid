@@ -25,6 +25,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,12 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.condosa.R
+import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
+import com.project.condosa.domain.model.ApiResponsePredio
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -366,12 +373,31 @@ fun showData(elemento: String = "-") {
     }
 }
 
+
+
 @Composable
 fun IconWithComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId: Int,
 ) {
-
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("Opción 1", "Opción 2", "Opción 3")
+
+    var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
+    val apiService = ApiPredioServiceImplementation()
+
+    LaunchedEffect(Unit) {
+        try {
+            val response = apiService.getPredios()
+            prediosResponse = response
+        } catch (e: Exception) {
+            // Manejar errores, por ejemplo, mostrar un mensaje de error
+        }
+    }
+
+    val options = if (prediosResponse != null) {
+        listOf("Opción 1", "Opción 2")
+    } else {
+        listOf("Opción 1", "Opción 2", "Opción 3")
+    }
+
     var selectedOption by remember { mutableStateOf("Select an option") }
 
     val iconVector = ImageVector.vectorResource(id = iconId)
