@@ -1,6 +1,7 @@
 package com.project.condosa.ui.components.view.Initial
 
 import android.annotation.SuppressLint
+import android.widget.RadioGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -162,19 +164,16 @@ import kotlinx.coroutines.withContext
     
             Spacer(modifier = Modifier.weight(0.5f))
     
-            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome){
-                openDialog.value=true
-            }
+            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome)
 
-            Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
+
+            //(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
             Spacer(modifier = Modifier.weight(0.2f))
     
-            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar){
-                openDialog.value=true
-            }
+            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar)
 
-            Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
+            //Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
             Spacer(modifier = Modifier.weight(1f))
     
@@ -398,17 +397,31 @@ import kotlinx.coroutines.withContext
             }
         }
     }
-    
-    
-    
+
+
+
     @Composable
     fun IconWithComboBox(
         predioText: String,
         padding: Dp,
         condicion: Boolean,
         iconId: Int,
-        openDialog: ()->Unit
     ) {
+
+        var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
+        val apiService = ApiPredioServiceImplementation()
+
+        LaunchedEffect(Unit) {
+            try {
+                val response = apiService.getPredios()
+                prediosResponse = response
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error
+            }
+        }
+
+
+
         var expanded by remember { mutableStateOf(false) }
 
 
@@ -416,6 +429,8 @@ import kotlinx.coroutines.withContext
 
         val iconVector = ImageVector.vectorResource(id = iconId)
         val bluePaletColor = colorResource(id = R.color.bluePalet)
+
+
 
 
         Row(
@@ -434,7 +449,7 @@ import kotlinx.coroutines.withContext
                         Modifier.padding(end = padding)
                     }
                 )
-    
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -456,9 +471,9 @@ import kotlinx.coroutines.withContext
                         )
                     }
                     Spacer(modifier = Modifier.width(35.dp))
-    
+
                     Box(
-                        modifier = Modifier.clickable { /*showDialog = true*/ openDialog() },
+                        modifier = Modifier.clickable { expanded = true },
                         contentAlignment = Alignment.CenterStart
                     ) {
                         Column(
@@ -501,7 +516,67 @@ import kotlinx.coroutines.withContext
         }
 
 
-    
-    
+
+        val options = if (prediosResponse != null) {
+            listOf("Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5")
+        } else {
+            listOf("Opción 1", "Opción 2", "Opción 3")
+        }
+
+        val redPaletCircleColor = colorResource(id = R.color.redPaletCircle)
+        var newOption by remember { mutableStateOf(selectedOption) }
+
+        if (expanded) {
+            AlertDialog(
+                onDismissRequest = { expanded = false },
+                title = {
+                    Text(
+                        "Título del Diálogo",
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                },
+                text = {
+                    Column {
+                        // Usar un RadioGroup para mostrar las opciones como botones de radio
+                        options.forEach { option ->
+                            Row(
+                                modifier = Modifier.clickable {
+                                    newOption = option
+                                },
+                                verticalAlignment = Alignment.CenterVertically // Alineación vertical
+
+                            ) {
+                                RadioButton(
+                                    selected = (newOption == option),
+                                    onClick = { newOption = option }
+                                )
+                                Text(text = option, modifier = Modifier.padding(start = 16.dp))
+                            }
+                        }
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            selectedOption = newOption
+                            expanded = false
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = redPaletCircleColor)
+                    ) {
+                        Text("Cerrar", color = Color.White)
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { expanded = false }) {
+                        Text("Cancelar")
+                    }
+                }
+            )
+        }
+
+
     }
-    
+
