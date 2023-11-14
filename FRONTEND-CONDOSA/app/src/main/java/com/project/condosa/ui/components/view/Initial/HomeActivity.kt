@@ -2,11 +2,15 @@ package com.project.condosa.ui.components.view.Initial
 
 import android.annotation.SuppressLint
 import android.widget.RadioGroup
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,7 +21,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,6 +36,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +63,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.project.condosa.R
 import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
 import com.project.condosa.domain.model.ApiResponsePredio
@@ -99,8 +110,10 @@ import kotlinx.coroutines.withContext
             }
         )
     }
-    
-    
+
+
+var openDialog= false
+
     @Composable
     fun View(
         name: String,
@@ -120,9 +133,6 @@ import kotlinx.coroutines.withContext
         val redPaletCircle = colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
 
 
-        val openDialog= remember {
-            mutableStateOf(false)
-        }
 
         Column(
             modifier = modifier.run {
@@ -164,14 +174,18 @@ import kotlinx.coroutines.withContext
     
             Spacer(modifier = Modifier.weight(0.5f))
     
-            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome)
+            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome){
+                openDialog=true
+            }
 
 
             //(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
             Spacer(modifier = Modifier.weight(0.2f))
     
-            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar)
+            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar){
+                    openDialog=true
+            }
 
             //Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
@@ -400,12 +414,16 @@ import kotlinx.coroutines.withContext
 
 
 
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
     @Composable
     fun IconWithComboBox(
         predioText: String,
         padding: Dp,
         condicion: Boolean,
         iconId: Int,
+
+        openDialog: () -> Unit
+
     ) {
 
         var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
@@ -518,65 +536,70 @@ import kotlinx.coroutines.withContext
 
 
         val options = if (prediosResponse != null) {
-            listOf("Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5")
+            listOf("Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
         } else {
-            listOf("Opción 1", "Opción 2", "Opción 3")
+            listOf("Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
         }
 
         val redPaletCircleColor = colorResource(id = R.color.redPaletCircle)
-        var newOption by remember { mutableStateOf(selectedOption) }
 
         if (expanded) {
-            AlertDialog(
+            Dialog(
                 onDismissRequest = { expanded = false },
-                title = {
+            ) {
+                Column(Modifier.background(Color.White)) {
                     Text(
-                        "Título del Diálogo",
-                        style = TextStyle(
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        text = "Pick something from the list",
+                        style = MaterialTheme.typography.subtitle1,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
-                },
-                text = {
-                    Column {
-                        // Usar un RadioGroup para mostrar las opciones como botones de radio
-                        options.forEach { option ->
-                            Row(
-                                modifier = Modifier.clickable {
-                                    newOption = option
-                                },
-                                verticalAlignment = Alignment.CenterVertically // Alineación vertical
-
+                    FlowRow(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .weight(1f)
+                    ) {
+                        for (option in options) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
                             ) {
-                                RadioButton(
-                                    selected = (newOption == option),
-                                    onClick = { newOption = option }
-                                )
-                                Text(text = option, modifier = Modifier.padding(start = 16.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = false, // Puedes establecer esto según tus necesidades
+                                        onClick = {
+                                            // Lógica para manejar la selección del radio botón
+                                            expanded = false
+                                            // Puedes realizar alguna acción con la opción seleccionada aquí
+                                        }
+                                    )
+                                    Text(option, modifier = Modifier.padding(start = 8.dp))
+                                }
                             }
                         }
                     }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            selectedOption = newOption
-                            expanded = false
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = redPaletCircleColor)
+
+
+                    FlowRow(
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
-                        Text("Cerrar", color = Color.White)
+                        TextButton(onClick = { expanded = false }) {
+                            Text("Cancel")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp)) // Espacio entre elementos
+                        TextButton(onClick = { expanded = false }) {
+                            Text("Done")
+                        }
                     }
-                },
-                dismissButton = {
-                    Button(onClick = { expanded = false }) {
-                        Text("Cancelar")
-                    }
+
                 }
-            )
+            }
         }
-
-
     }
+
+
 
