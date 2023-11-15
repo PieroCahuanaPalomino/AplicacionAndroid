@@ -15,14 +15,4 @@ object RetrofitClient {
         return retrofit.create(ApiPredioService::class.java)
     }
 
-
-    /*
-    private const val URL = "https://superheroapi.com/"
-
-    private val retrofit =
-        Retrofit.Builder().baseUrl(URL).addConverterFactory(GsonConverterFactory.create()).build()
-
-    fun getInstance():ApiPredioService{
-        return retrofit.create(ApiPredioService::class.java)
-    }*/
 }

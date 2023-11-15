@@ -85,11 +85,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
+import com.project.condosa.domain.model.ApiResponsePredioPeriodo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
 
-var selectedOptionIndex : Int= -1
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
@@ -131,11 +131,10 @@ var selectedOptionIndex : Int= -1
     }
 
 
-
-//var openDialog= false
-    @Suppress("UNUSED_VARIABLE")
-    @SuppressLint("CoroutineCreationDuringComposition")
-    @Composable
+var selectedOptionIndex : Int= -1
+ @Suppress("UNUSED_VARIABLE")
+ @SuppressLint("CoroutineCreationDuringComposition")
+ @Composable
 fun View(
     name: String,
     email: String?,
@@ -159,19 +158,20 @@ fun View(
         var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
         val apiService = ApiPredioServiceImplementation()
         var options by remember { mutableStateOf<List<String>>(emptyList()) }
+        var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
 
         val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             lifecycleScope?.launch(Dispatchers.IO) {
                 try {
-                    val response: Response<ApiResponsePredio> = apiService.getPredios()
+                    val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
                     withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-                            val apiResponse = response.body()
+                        if (responsePredios.isSuccessful) {
+                            val apiResponse = responsePredios.body()
                             val success = apiResponse?.success ?: false
 
-                            options = apiResponse?.predios!!.map { it.predio }
+                            options =  apiResponse?.predios!!.map { it.predio }
 
                             // Muestra el valor de success en el Toast
                             Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
@@ -187,18 +187,6 @@ fun View(
                 }
             }
         }
-
-
-        /*
-                val options: List<String> = if (prediosResponse != null) {
-                    (prediosResponse!!.predios as List<Map<String, Any>>).map {
-                        it["predio"] as String
-                    }
-                } else {
-                    listOf("Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
-                }*/
-
-
             Column(
                 modifier = modifier.run {
                     var background = fillMaxWidth()
@@ -261,7 +249,7 @@ fun View(
                     padding = 0.dp,
                     condicion = true,
                     iconResourceIdCalendar,
-                    options,
+                    optionsPeriodo,
                 ) {
                     //openDialog = true
                 }
