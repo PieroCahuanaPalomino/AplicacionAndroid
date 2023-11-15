@@ -132,6 +132,37 @@ var openDialog= false
         val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
         val redPaletCircle = colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
 
+        var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
+        val apiService = ApiPredioServiceImplementation()
+        var options by remember { mutableStateOf<List<String>>(emptyList()) }
+
+        LaunchedEffect(Unit) {
+            try {
+                val response = apiService.getPredios()
+                prediosResponse = response
+                val predios = if (response.predios is List<*>) {
+                    (response.predios as List<Map<String, Any>>).map { it["predio"] as String }
+                } else {
+                    listOf("Opción 1", "Opción 2", "Opción 3","Opción 4","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
+                }
+
+                // Actualizar el estado de options
+                options = predios
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error
+            }
+
+        }
+
+
+/*
+        val options: List<String> = if (prediosResponse != null) {
+            (prediosResponse!!.predios as List<Map<String, Any>>).map {
+                it["predio"] as String
+            }
+        } else {
+            listOf("Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
+        }*/
 
 
         Column(
@@ -174,7 +205,7 @@ var openDialog= false
     
             Spacer(modifier = Modifier.weight(0.5f))
     
-            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome){
+            IconWithComboBox(predioText = "PREDIO",padding=0.dp,condicion = false,iconResourceIdHome,options,){
                 openDialog=true
             }
 
@@ -183,7 +214,7 @@ var openDialog= false
 
             Spacer(modifier = Modifier.weight(0.2f))
     
-            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar){
+            IconWithComboBox(predioText = "PERIODO CUOTA",padding=0.dp,condicion = true,iconResourceIdCalendar,options,){
                     openDialog=true
             }
 
@@ -349,11 +380,11 @@ var openDialog= false
             }
         }
     }
-    
-    
-    
-    
-    @Composable
+
+
+
+
+@Composable
     fun showData(elemento: String = "-") {
         val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
         val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
@@ -421,22 +452,12 @@ var openDialog= false
         padding: Dp,
         condicion: Boolean,
         iconId: Int,
-
+        options: List<String>,
         openDialog: () -> Unit
 
     ) {
 
-        var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
-        val apiService = ApiPredioServiceImplementation()
 
-        LaunchedEffect(Unit) {
-            try {
-                val response = apiService.getPredios()
-                prediosResponse = response
-            } catch (e: Exception) {
-                // Manejar errores, por ejemplo, mostrar un mensaje de error
-            }
-        }
 
 
 
@@ -535,11 +556,6 @@ var openDialog= false
 
 
 
-        val options = if (prediosResponse != null) {
-            listOf("Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
-        } else {
-            listOf("Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5","Opción 1", "Opción 2", "Opción 3","Opción 4", "Opción 5")
-        }
 
         val redPaletCircleColor = colorResource(id = R.color.redPaletCircle)
 

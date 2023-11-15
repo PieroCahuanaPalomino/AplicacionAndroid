@@ -12,9 +12,9 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class ApiPredioServiceImplementation {
-    private val apiPredioService = RetrofitClient.apiPredioService
+    private val apiPredioService = RetrofitClient.getInstance()
 
-    suspend fun getPredios(): ApiResponsePredio {
+    /*suspend fun getPredios(): ApiResponsePredio {
         return suspendCoroutine { continuation ->
             apiPredioService.getPredios().enqueue(object : Callback<ApiResponsePredio> {
                 override fun onResponse(call: Call<ApiResponsePredio>, response: Response<ApiResponsePredio>) {
@@ -35,5 +35,10 @@ class ApiPredioServiceImplementation {
                 }
             })
         }
+    }*/
+
+    suspend fun getPredios(): Response<ApiResponsePredio>{
+        val response : Response <ApiResponsePredio> = apiPredioService.getPredios();
+        return response;
     }
 }

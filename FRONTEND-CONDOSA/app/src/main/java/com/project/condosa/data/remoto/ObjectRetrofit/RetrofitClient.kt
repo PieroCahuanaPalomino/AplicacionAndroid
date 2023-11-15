@@ -5,10 +5,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://apimocha.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val apiPredioService= retrofit.create(ApiPredioService::class.java)
+     fun getInstance():ApiPredioService{
+        return retrofit.create(ApiPredioService::class.java)
+    }
+
+
+    /*
+    private const val URL = "https://superheroapi.com/"
+
+    private val retrofit =
+        Retrofit.Builder().baseUrl(URL).addConverterFactory(GsonConverterFactory.create()).build()
+
+    fun getInstance():ApiPredioService{
+        return retrofit.create(ApiPredioService::class.java)
+    }*/
 }
