@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://apimocha.com/")
+        .baseUrl("https://successful-georgianne-apiflask.koyeb.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
