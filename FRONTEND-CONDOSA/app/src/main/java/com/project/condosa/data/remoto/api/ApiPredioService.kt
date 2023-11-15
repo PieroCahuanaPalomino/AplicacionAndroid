@@ -8,10 +8,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ApiPredioService {
-    @GET("predios/getPredios")
+    @GET("/getPredios")
     suspend fun getPredios(): Response<ApiResponsePredio> // ApiResponse es la clase que definimos anteriormente para modelar la respuesta
 
-    @GET("predios/getPredio/{id}")
+    @GET("/getPredio/{id}")
     suspend fun getPrediosPeriodo(@Path("id")id:Int): Response<ApiResponsePredioPeriodo> // ApiResponse es la clase que definimos anteriormente para modelar la respuesta
 
     @GET("/api/10229233666327556/search/{name}")
