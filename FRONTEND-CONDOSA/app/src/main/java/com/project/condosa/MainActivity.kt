@@ -21,16 +21,14 @@ import com.project.condosa.domain.model.ApiResponsePredio
 import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
 import com.project.condosa.ui.theme.CondosaTheme
 import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
+import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-//import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
 
 class MainActivity : ComponentActivity() {
-    val retrofit = RetrofitClient.getInstance()
-    val apiService = ApiPredioServiceImplementation()
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +43,8 @@ class MainActivity : ComponentActivity() {
                     //Greeting("Android Rama")
 
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-                    //HomeContent("user@email.com", "Some Provider")
+                    HomeContent("user@email.com", "Some Provider")
+                    /*
                     lifecycleScope.launch(Dispatchers.IO) {
                         try {
                             val response: Response<ApiResponsePredio> = apiService.getPredios()
@@ -64,14 +63,17 @@ class MainActivity : ComponentActivity() {
                                 Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
-                    //View("User Name", "user@email.com", "Some Provider")
+                    }*/
+                    View("User Name", "user@email.com", "Some Provider",lifecycleScope)
                     //GastosPredio(name="Los Rosales", period = "2023-I")
                 }
             }
         }
     }
 }
+
+
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -85,8 +87,8 @@ fun GreetingPreview() {
     CondosaTheme {
         Greeting("Android")
         //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-        //HomeContent("user@email.com", "Some Provider")
-        //View("User Name", "user@email.com", "Some Provider")
+        HomeContent("user@email.com", "Some Provider")
+        View("User Name", "user@email.com", "Some Provider")
         //GastosPredio(name="Los Rosales", period = "2023-I")
     }
 }
