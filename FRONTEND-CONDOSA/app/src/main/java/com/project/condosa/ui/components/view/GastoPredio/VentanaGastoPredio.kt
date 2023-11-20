@@ -156,6 +156,21 @@ fun GastosPredio(
                             )
                         }
                     }
+                    var tiposGastos: List<TipoGastoPredio> by remember { mutableStateOf((emptyList())) }
+                    var descripcionGastos by remember { mutableStateOf<List<GastoPredio>>(emptyList()) }
+
+
+                    LaunchedEffect(Unit) {
+                        val apiService = APIGastoPredioImplementacion()
+                        tiposGastos = apiService.getTipoGastosComunes()
+                        val nuevosGastos = mutableListOf<GastoPredio>()
+                        tiposGastos.forEach { tipoGasto ->
+                            val gastos = apiService.getGastosComunesTipo(tipoGasto.id_tipo_gasto) ?: emptyList()
+                            nuevosGastos.addAll(gastos)
+                        }
+                        descripcionGastos = nuevosGastos
+                    }
+
 
                     LazyColumn(
                         modifier = Modifier
@@ -165,7 +180,7 @@ fun GastosPredio(
                         // contentPadding = PaddingValues(horizontal = 14.dp)
                     ) {
 
-                        items(20) { tipoGasto  ->
+                        items(descripcionGastos) { tipoGasto  ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -175,7 +190,7 @@ fun GastosPredio(
 
                                 ) {
                                 Text(
-                                    text = "Gasto",
+                                    text = tipoGasto.descripcion,
                                     fontSize = 15.sp,
                                     fontFamily = poppins,
                                     fontWeight = FontWeight.Normal,
