@@ -197,7 +197,7 @@ fun GastosPredio(
                                     modifier = Modifier.weight(2f)
                                 )
                                 Text(
-                                    text = "S/100.00",
+                                    text = "S/."+(90 + (Math.random() * (350 - 90)).toInt()).toString(),
                                     fontSize = 15.sp,
                                     fontFamily = poppins,
                                     modifier = Modifier.weight(1.5f)
