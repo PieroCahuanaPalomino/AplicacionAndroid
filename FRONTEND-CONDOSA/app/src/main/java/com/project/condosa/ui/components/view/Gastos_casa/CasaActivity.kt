@@ -31,9 +31,11 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,9 +55,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.condosa.R
 import com.project.condosa.ui.components.view.GastoPredio.poppins
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import java.net.URL
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+
+@kotlinx.serialization.Serializable
+data class CasaData(
+    val casas: List<Casa>,
+    val message: String,
+    val success: Boolean
+)
+
+@kotlinx.serialization.Serializable
+data class Casa(
+    val area_casa: String,
+    val area_cochera: String,
+    val area_total: String,
+    val estado: String,
+    val id_casa: Int,
+    val id_indice: Int,
+    val id_predio: Int,
+    val mdu: String,
+    val numero: Int,
+    val participacion: String,
+    val piso: Int,
+    val responsable: String
+)
+
+// Función para obtener datos de la API
+suspend fun fetchDataFromAPI(numeroPredio: Int): CasaData {
+    return withContext(Dispatchers.IO) {
+        val url = URL("http://127.0.0.1:5000/getPredios/5/getCasas")
+        val jsonString = url.readText()
+
+        // Deserializa la respuesta JSON
+        return@withContext Json.decodeFromString(jsonString)
+    }
+}
 
 @Composable
 fun GastosContent(email: String?, provider: String?) {
@@ -110,7 +150,16 @@ fun ViewGastos(
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
     val fonPantalla = colorResource(id = R.color.fonPantalla) // Obtener el color de color.xml
     val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
+    var responsable by remember { mutableStateOf("") }
+    var loading by remember { mutableStateOf(true) }
 
+    val scope = rememberCoroutineScope()
+    // Llamada a la API para obtener los datos del responsable
+    LaunchedEffect(Unit) {
+        val result = fetchDataFromAPI(14) // Aquí se debe pasar el número de predio correcto
+        loading = false
+        responsable = result.casas.firstOrNull()?.responsable ?: ""
+    }
     Column(
         modifier = modifier.run {
             var background = fillMaxWidth()
@@ -148,7 +197,7 @@ fun ViewGastos(
 
         Spacer(modifier = Modifier.weight(0.2f))
 
-        MostrarDataGastos()
+        MostrarDataGastos(responsable)
 
         //Spacer(modifier = Modifier.weight(1f))
 
@@ -206,7 +255,7 @@ fun ViewGastos(
 
 
 @Composable
-fun MostrarDataGastos(elemento: String = "-") {
+fun MostrarDataGastos(nom_prop: String) {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
 
@@ -227,7 +276,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text("Quintana Fabrizzio", fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Column(
@@ -240,7 +289,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text("Activo", fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Box(
