@@ -86,11 +86,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
+import com.project.condosa.domain.model.ApiResponsePredioSingle
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
 
-
+var selectedOptionIndex : Int= -1
+var selectedOptionIndexPeriodo : Int= -1
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun HomeContent(email: String?, provider: String?) {
@@ -131,7 +133,10 @@ import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWi
     }
 
 
-var selectedOptionIndex : Int= -1
+
+
+
+
  @Suppress("UNUSED_VARIABLE")
  @SuppressLint("CoroutineCreationDuringComposition")
  @Composable
@@ -143,348 +148,372 @@ fun View(
     modifier: Modifier = Modifier
 )
 {
-        val iconResourceIdHome: Int =
-            R.drawable.home  // Asigna el valor correcto del recurso de icono
-        val iconResourceIdCalendar: Int =
-            R.drawable.calenderio  // Asigna el valor correcto del recurso de icono
+    val iconResourceIdHome: Int =
+        R.drawable.home  // Asigna el valor correcto del recurso de icono
+    val iconResourceIdCalendar: Int =
+        R.drawable.calenderio  // Asigna el valor correcto del recurso de icono
+    val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
+    val fonPantalla = colorResource(id = R.color.fonPantalla) // Obtener el color de color.xml
+    val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
+    val redPaletCircle =
+        colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
 
+    var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
+    val apiService = ApiPredioServiceImplementation()
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+    var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
 
-        val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
-        val fonPantalla = colorResource(id = R.color.fonPantalla) // Obtener el color de color.xml
-        val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
-        val redPaletCircle =
-            colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
+    LaunchedEffect(Unit) {
+        lifecycleScope?.launch(Dispatchers.IO) {
+            try {
+                val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
+                withContext(Dispatchers.Main) {
+                    if (responsePredios.isSuccessful) {
+                        val apiResponse = responsePredios.body()
+                        val success = apiResponse?.success ?: false
 
-        var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
-        val apiService = ApiPredioServiceImplementation()
-        var options by remember { mutableStateOf<List<String>>(emptyList()) }
-        var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
+                        options =  apiResponse?.predios!!.map { it.predio }
 
-        val context = LocalContext.current
-
-        LaunchedEffect(Unit) {
-            lifecycleScope?.launch(Dispatchers.IO) {
-                try {
-                    val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
-                    withContext(Dispatchers.Main) {
-                        if (responsePredios.isSuccessful) {
-                            val apiResponse = responsePredios.body()
-                            val success = apiResponse?.success ?: false
-
-                            options =  apiResponse?.predios!!.map { it.predio }
-
-                            // Muestra el valor de success en el Toast
-                            Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                } catch (e: Exception) {
-                    // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        // Muestra el valor de success en el Toast
+                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
-            }
-        }
-            Column(
-                modifier = modifier.run {
-                    var background = fillMaxWidth()
-                        .padding(top = 55.dp)
-                        .background(fonPantalla)
-                    background
-
-                }
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .padding(start = 45.dp)
-                ) {
-                    Text(
-                        text = "Bienvenido",
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                        color = bluePaletColor,
-                        style = TextStyle(fontWeight = FontWeight.Bold)
-                    )
-
-                    email?.let {
-                        Text(
-                            text = "Email: $it",
-                            fontSize = 15.sp,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                            color = grisPaletLet
-                        )
-                    }
-                    /*
-                provider?.let {
-                    Text(
-                        text = "Provider: $it",
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                }*/
-                }
-
-                Spacer(modifier = Modifier.weight(0.5f))
-
-                IconWithComboBox(
-                    predioText = "PREDIO",
-                    padding = 0.dp,
-                    condicion = false,
-                    iconResourceIdHome,
-                    options,
-                ) {
-                    //openDialog = true
-                }
-
-
-                //(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
-
-                Spacer(modifier = Modifier.weight(0.2f))
-
-                IconWithComboBox(
-                    predioText = "PERIODO CUOTA",
-                    padding = 0.dp,
-                    condicion = true,
-                    iconResourceIdCalendar,
-                    optionsPeriodo,
-                ) {
-                    //openDialog = true
-                }
-
-                //Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                showData()
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Quinta fila con un botón centrado
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(72.dp)
-                            .padding(8.dp)
-                            .background(
-                                bluePaletColor,
-                                shape = RoundedCornerShape(10)
-                            ) // Establece el color de fondo del Box a bluePaletColor
-                    ) {
-                        Text(
-                            "Ver datos", color = Color.White,
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp // Establece el tamaño del texto a 18 sp
-                            ),
-                        ) // Mantiene el color del texto en blanco
-                    }
-                }
-                // Sexta fila con dos elementos Box que ocupan el mismo espacio
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .weight(0.5f)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(2f) // Peso del 66.67% (2/3)
-                                .fillMaxWidth()
-                                .fillMaxHeight() // Ocupa toda la altura del Column
-                                .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                                .background(
-                                    bluePaletColor,
-                                    shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                "Registrar gastos del predio",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp // Establece el tamaño del texto a 18 sp
-                                ),
-
-                                )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .weight(1f) // Peso del 33.33% (1/3)
-                                .fillMaxWidth() // Ocupa todo el ancho del Column
-                                .padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 8.dp)
-                                .background(grisPaletLet), // Cambia el color si es necesario
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    "Segundo botón",
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 16.sp // Establece el tamaño del texto a 18 sp
-                                    ),
-
-                                    )
-
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.circle),
-                                    contentDescription = "Icono Flecha",
-                                    modifier = Modifier.padding(start = 5.dp),
-                                    tint = redPaletCircle
-
-                                )
-                            }
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .weight(0.5f)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .weight(2f) // Peso del 66.67% (2/3)
-                                .fillMaxWidth()
-                                .fillMaxHeight() // Ocupa toda la altura del Column
-                                .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                                .background(
-                                    bluePaletColor,
-                                    shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                "Registrar gastos de la casa",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp // Establece el tamaño del texto a 18 sp
-                                ),
-
-                                )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .weight(1f) // Peso del 33.33% (1/3)
-                                .fillMaxWidth() // Ocupa todo el ancho del Column
-                                .padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 8.dp)
-                                .background(grisPaletLet), // Cambia el color si es necesario
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    "Segundo botón",
-                                    color = Color.White,
-                                    textAlign = TextAlign.Center,
-                                    style = TextStyle(
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 16.sp // Establece el tamaño del texto a 18 sp
-                                    ),
-
-                                    )
-
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.circle),
-                                    contentDescription = "Icono Flecha",
-                                    modifier = Modifier.padding(start = 5.dp),
-                                    tint = redPaletCircle
-
-                                )
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-
-@Composable
-fun showData(elemento: String = "-") {
-        val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
-        val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
-    
-        // Row para centrar horizontalmente
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            // Una sola Column para las dos filas
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente los elementos
-            ) {
-                // Tercera fila con dos textos "casas"
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
-    
-                ) {
-                    Text(
-                        text = "Responsable",
-                        fontSize = 18.sp,
-                        color = bluePaletColorLet,
-                        style = TextStyle(fontWeight = FontWeight.Bold),
-                    )
-                    Text(
-                        text = "Nº Casas",
-                        fontSize = 18.sp,
-                        color = bluePaletColorLet,
-                        style = TextStyle(fontWeight = FontWeight.Bold)
-                    )
-                }
-    
-                // Cuarta fila con dos elementos Text
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
-                ) {
-                    Text(elemento, fontSize = 18.sp)
-                    Text(elemento, fontSize = 18.sp)
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 30.dp, end = 190.dp),
-                    horizontalArrangement = Arrangement.Center // Espacio entre los textos
-                ) {
-                    Text("Cargo", fontSize = 18.sp,
-                        color= grisPaletLet,
-                        style = TextStyle(fontStyle = FontStyle.Italic)
-                    )
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
+    Column(
+        modifier = modifier.run {
+            var background = fillMaxWidth()
+                .padding(top = 55.dp)
+                .background(fonPantalla)
+            background
 
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .padding(start = 45.dp)
+        ) {
+            Text(
+                text = "Bienvenido",
+                fontSize = 30.sp,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = bluePaletColor,
+                style = TextStyle(fontWeight = FontWeight.Bold)
+            )
+
+            email?.let {
+                Text(
+                    text = "Email: $it",
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                    color = grisPaletLet
+                )
+            }
+            /*
+        provider?.let {
+            Text(
+                text = "Provider: $it",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }*/
+        }
+
+        Spacer(modifier = Modifier.weight(0.5f))
+
+        IconWithComboBox(
+            predioText = "PREDIO",
+            padding = 0.dp,
+            condicion = false,
+            iconResourceIdHome,
+            options,false,
+        ) {
+            //openDialog = true
+        }
+
+
+        //(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
+
+        Spacer(modifier = Modifier.weight(0.2f))
+
+        IconWithComboBox(
+            predioText = "PERIODO CUOTA",
+            padding = 0.dp,
+            condicion = true,
+            iconResourceIdCalendar,
+            optionsPeriodo,true,
+        ) {
+            //openDialog = true
+        }
+
+        //Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        showData(lifecycleScope)
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        // Quinta fila con un botón centrado
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(72.dp)
+                    .padding(8.dp)
+                    .background(
+                        bluePaletColor,
+                        shape = RoundedCornerShape(10)
+                    ) // Establece el color de fondo del Box a bluePaletColor
+            ) {
+                Text(
+                    "Ver datos", color = Color.White,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp // Establece el tamaño del texto a 18 sp
+                    ),
+                ) // Mantiene el color del texto en blanco
+            }
+        }
+        // Sexta fila con dos elementos Box que ocupan el mismo espacio
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier
+                    .height(100.dp)
+                    .weight(0.5f)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(2f) // Peso del 66.67% (2/3)
+                        .fillMaxWidth()
+                        .fillMaxHeight() // Ocupa toda la altura del Column
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
+                        .background(
+                            bluePaletColor,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Registrar gastos del predio",
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp // Establece el tamaño del texto a 18 sp
+                        ),
+
+                        )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f) // Peso del 33.33% (1/3)
+                        .fillMaxWidth() // Ocupa todo el ancho del Column
+                        .padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 8.dp)
+                        .background(grisPaletLet), // Cambia el color si es necesario
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Segundo botón",
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp // Establece el tamaño del texto a 18 sp
+                            ),
+
+                            )
+
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.circle),
+                            contentDescription = "Icono Flecha",
+                            modifier = Modifier.padding(start = 5.dp),
+                            tint = redPaletCircle
+
+                        )
+                    }
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .height(100.dp)
+                    .weight(0.5f)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(2f) // Peso del 66.67% (2/3)
+                        .fillMaxWidth()
+                        .fillMaxHeight() // Ocupa toda la altura del Column
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
+                        .background(
+                            bluePaletColor,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Registrar gastos de la casa",
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp // Establece el tamaño del texto a 18 sp
+                        ),
+
+                        )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f) // Peso del 33.33% (1/3)
+                        .fillMaxWidth() // Ocupa todo el ancho del Column
+                        .padding(start = 8.dp, end = 8.dp, top = 0.dp, bottom = 8.dp)
+                        .background(grisPaletLet), // Cambia el color si es necesario
+                    contentAlignment = Alignment.Center
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Segundo botón",
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp // Establece el tamaño del texto a 18 sp
+                            ),
+
+                            )
+
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.circle),
+                            contentDescription = "Icono Flecha",
+                            modifier = Modifier.padding(start = 5.dp),
+                            tint = redPaletCircle
+
+                        )
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun showData(
+    lifecycleScope : CoroutineScope?=null,
+    elemento: String = "-") {
+    val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
+    val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
+    val apiService = ApiPredioServiceImplementation()
+    var responsable by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    LaunchedEffect(selectedOptionIndex) {
+            try {
+                val responsePredios: Response<ApiResponsePredioSingle> = apiService.getPredio(selectedOptionIndex)
+                withContext(Dispatchers.Main) {
+                    if (responsePredios.isSuccessful) {
+                        val apiResponse = responsePredios.body()
+                        val success = apiResponse?.success ?: false
+
+                        options =  apiResponse?.predio!!.map { it.responsable }
+
+                        // Muestra el valor de success en el Toast
+                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
+
+    // Row para centrar horizontalmente
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        // Una sola Column para las dos filas
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente los elementos
+        ) {
+            // Tercera fila con dos textos "casas"
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
+                horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
+
+            ) {
+                Text(
+                    text = "Responsable",
+                    fontSize = 18.sp,
+                    color = bluePaletColorLet,
+                    style = TextStyle(fontWeight = FontWeight.Bold),
+                )
+                Text(
+                    text = "Nº Casas",
+                    fontSize = 18.sp,
+                    color = bluePaletColorLet,
+                    style = TextStyle(fontWeight = FontWeight.Bold)
+                )
+            }
+
+            // Cuarta fila con dos elementos Text
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
+            ) {
+                Text(elemento, fontSize = 18.sp)
+                Text(elemento, fontSize = 18.sp)
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp, end = 190.dp),
+                horizontalArrangement = Arrangement.Center // Espacio entre los textos
+            ) {
+                Text("Cargo", fontSize = 18.sp,
+                    color= grisPaletLet,
+                    style = TextStyle(fontStyle = FontStyle.Italic)
+                )
+            }
+        }
+    }
+}
 
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
@@ -495,6 +524,7 @@ fun IconWithComboBox(
     condicion: Boolean,
     iconId: Int,
     options: List<String>,
+    periodoBoolean: Boolean,
     openDialog: () -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -503,6 +533,35 @@ fun IconWithComboBox(
     val iconVector = ImageVector.vectorResource(id = iconId)
     val bluePaletColor = colorResource(id = R.color.bluePalet)
 
+    val apiService = ApiPredioServiceImplementation()
+    var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
+
+    if(periodoBoolean){
+        LaunchedEffect(selectedOptionIndex) {
+            if (/*expanded &&*/ selectedOptionIndex != -1) {
+                try {
+                    val idSeleccionado = selectedOptionIndex
+                    val responsePeriodo: Response<ApiResponsePredioPeriodo> =
+                        apiService.getPrediosPeriodo(idSeleccionado)
+                    if (responsePeriodo.isSuccessful) {
+                        val apiResponsePeriodo = responsePeriodo.body()
+                        val successPeriodo = apiResponsePeriodo?.success ?: false
+
+                        optionsPeriodo = apiResponsePeriodo?.gastos?.map { it.periodo } ?: emptyList()
+
+                        // Muestra el valor de successPeriodo en el Toast
+                        Toast.makeText(context, "Success: $optionsPeriodo", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } catch (e: Exception) {
+                    // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                    Toast.makeText(context, "ErrorPeriodo: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
@@ -602,27 +661,53 @@ fun IconWithComboBox(
                         .verticalScroll(rememberScrollState())
                         .weight(1f)
                 ) {
-                    for ((index, option) in options.withIndex()) {
-                        Column(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
+                    if(periodoBoolean){
+                        for ((index, option) in optionsPeriodo.withIndex()) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
                             ) {
-                                RadioButton(
-                                    selected = index == selectedOptionIndex,
-                                    onClick = {
-                                        // Actualiza el estado cuando se hace clic en el RadioButton
-                                        selectedOption = option
-                                        selectedOptionIndex = index
-                                    }
-                                )
-                                Text(option, modifier = Modifier.padding(start = 8.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = index == selectedOptionIndexPeriodo,
+                                        onClick = {
+                                            // Actualiza el estado cuando se hace clic en el RadioButton
+                                            selectedOption = option
+                                            selectedOptionIndexPeriodo = index
+
+                                        }
+                                    )
+                                    Text(option, modifier = Modifier.padding(start = 8.dp))
+                                }
+                            }
+                        }
+                    }else{
+                        for ((index, option) in options.withIndex()) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = index == selectedOptionIndex,
+                                        onClick = {
+                                            // Actualiza el estado cuando se hace clic en el RadioButton
+                                            selectedOption = option
+                                            selectedOptionIndex = index
+                                        }
+                                    )
+                                    Text(option, modifier = Modifier.padding(start = 8.dp))
+                                }
                             }
                         }
                     }
+
                 }
 
                 FlowRow(

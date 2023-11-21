@@ -6,3 +6,8 @@ data class ApiResponsePredio(
     val success: Boolean
 )
 
+data class ApiResponsePredioSingle(
+    val message: String,
+    val predio: List<Predio>,
+    val success: Boolean
+)

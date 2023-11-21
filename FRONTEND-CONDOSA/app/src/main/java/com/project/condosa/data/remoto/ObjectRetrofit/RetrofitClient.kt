@@ -5,9 +5,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-
+    //https://successful-georgianne-apiflask.koyeb.app/
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://successful-georgianne-apiflask.koyeb.app/")
+        .baseUrl("https://apimocha.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
