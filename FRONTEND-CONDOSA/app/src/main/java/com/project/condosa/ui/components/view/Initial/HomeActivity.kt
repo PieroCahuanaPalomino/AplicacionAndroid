@@ -295,7 +295,7 @@ fun View(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "Segundo botón",
+                            "Pendiente",
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
@@ -362,7 +362,7 @@ fun View(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "Segundo botón",
+                            "Pendiente",
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
