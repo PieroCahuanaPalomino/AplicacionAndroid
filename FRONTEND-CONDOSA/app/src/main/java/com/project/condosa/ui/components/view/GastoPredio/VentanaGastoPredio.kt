@@ -172,6 +172,10 @@ fun GastosPredio(
                     }
 
 
+                    val tipoGastomonto = tipoGastomonto(descripcionGastos.size)
+
+
+
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
@@ -180,7 +184,8 @@ fun GastosPredio(
                         // contentPadding = PaddingValues(horizontal = 14.dp)
                     ) {
 
-                        items(descripcionGastos) { tipoGasto  ->
+                        items(descripcionGastos.size) { index   ->
+                            val tipoGasto = descripcionGastos[index]
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -197,7 +202,7 @@ fun GastosPredio(
                                     modifier = Modifier.weight(2f)
                                 )
                                 Text(
-                                    text = "S/."+(90 + (Math.random() * (350 - 90)).toInt()).toString(),
+                                    text = "S/."+tipoGastomonto[index],
                                     fontSize = 15.sp,
                                     fontFamily = poppins,
                                     modifier = Modifier.weight(1.5f)
@@ -312,6 +317,13 @@ fun GastosPredio(
         }
 
     }
+}
+
+fun tipoGastomonto(cantidadElementos: Int): List<Int> {
+    val gastosMonto = MutableList(cantidadElementos) {
+        90 + (Math.random() * (350 - 90)).toInt()
+    }
+    return gastosMonto
 }
 
 @Preview(widthDp = 360, heightDp = 640)
