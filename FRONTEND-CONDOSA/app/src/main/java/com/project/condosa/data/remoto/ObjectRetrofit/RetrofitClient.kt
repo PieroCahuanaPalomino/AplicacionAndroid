@@ -1,6 +1,6 @@
-package ObjectRetrofit
+package com.project.condosa.data.remoto.ObjectRetrofit
 
-import api.APIGastoPredio
+import com.project.condosa.data.remoto.api.APIGastoPredio
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,7 +10,7 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    fun getInstance():APIGastoPredio{
+    fun getInstance(): APIGastoPredio {
         return retrofit.create(APIGastoPredio::class.java)
     }
 }

@@ -1,6 +1,6 @@
 package com.project.condosa.ui.components.view.GastoPredio
 
-import ImplementacionAPI.APIGastoPredioImplementacion
+import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoPredioImplementacion
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -42,8 +41,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import model.GastoPredio
-import model.TipoGastoPredio
+import com.project.condosa.domain.model.GastoPredio
+import com.project.condosa.domain.model.TipoGastoPredio
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

@@ -1,10 +1,10 @@
-package ImplementacionAPI
+package com.project.condosa.data.remoto.ImplementacionAPI
 
-import ObjectRetrofit.RetrofitClient
-import model.GastoPredio
-import model.GastoPredioResponse
-import model.TipoGastoPredio
-import model.TipoGastoPredioResponse
+import com.project.condosa.data.remoto.ObjectRetrofit.RetrofitClient
+import com.project.condosa.domain.model.GastoPredio
+import com.project.condosa.domain.model.GastoPredioResponse
+import com.project.condosa.domain.model.TipoGastoPredio
+import com.project.condosa.domain.model.TipoGastoPredioResponse
 
 class APIGastoPredioImplementacion {
     private val apiGastoPredioService = RetrofitClient.getInstance()

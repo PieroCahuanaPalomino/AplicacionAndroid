@@ -1,4 +1,4 @@
-package model
+package com.project.condosa.domain.model
 
 import com.google.gson.annotations.SerializedName
 

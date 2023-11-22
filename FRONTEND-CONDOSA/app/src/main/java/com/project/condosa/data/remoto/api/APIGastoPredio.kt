@@ -1,9 +1,7 @@
-package api
+package com.project.condosa.data.remoto.api
 
-import model.GastoPredio
-import model.GastoPredioResponse
-import model.TipoGastoPredio
-import model.TipoGastoPredioResponse
+import com.project.condosa.domain.model.GastoPredioResponse
+import com.project.condosa.domain.model.TipoGastoPredioResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
