@@ -90,15 +90,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.project.condosa.Navigation.AppScreens
 import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
+import com.project.condosa.domain.model.ApiResponseCasa
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
 import com.project.condosa.domain.model.ApiResponsePredioSingle
 import com.project.condosa.ui.components.view.GastoPredio.poppins
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
-
-var selectedOptionIndex : Int= -1
-var selectedOptionIndexPeriodo : Int= -1
 
 /*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -176,17 +174,17 @@ fun View(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        lifecycleScope?.launch(Dispatchers.IO) {
+        withContext(Dispatchers.IO) {
             try {
                 val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
-                withContext(Dispatchers.Main) {
-                    if (responsePredios.isSuccessful) {
-                        val apiResponse = responsePredios.body()
-                        val success = apiResponse?.success ?: false
+                if (responsePredios.isSuccessful) {
+                    val apiResponse = responsePredios.body()
+                    val success = apiResponse?.success ?: false
 
-                        options =  apiResponse?.predios!!.map { it.predio }
+                    options = apiResponse?.predios!!.map { it.predio }
 
-                        // Muestra el valor de success en el Toast
+                    // Muestra el valor de success en el Toast
+                    withContext(Dispatchers.Main) {
                         Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
                             .show()
                     }
@@ -200,6 +198,7 @@ fun View(
             }
         }
     }
+
     Column(
         modifier = modifier.run {
             var background = fillMaxWidth()
@@ -333,9 +332,10 @@ fun View(
             ) {
                 Box(
                     modifier = Modifier
-                        .clickable {
-                            navController.navigate(route = AppScreens.VentanaGastoPredio.route + "/LosCerezos/2023")
-                         }
+                            .clickable {
+                                selectOptionGlobal
+                                navController.navigate(route = "${AppScreens.VentanaGastoPredio.route}/$selectOptionGlobal/$selectOptionGlobalFecha")
+                             }
                         .weight(2f) // Peso del 66.67% (2/3)
                         .fillMaxWidth()
                         .fillMaxHeight() // Ocupa toda la altura del Column
@@ -461,6 +461,15 @@ fun View(
 }
 
 
+var selectedOptionIndex by mutableStateOf(-1)
+var selectedOptionIndexPeriodo by mutableStateOf(-1)
+
+var globalSelectedOptionIndexPeriodo by mutableStateOf(-1)
+var globalSelectedOptionIndex by mutableStateOf(-1)
+var textCantidadCasas by mutableStateOf("-")
+var textResponsable by mutableStateOf("-")
+var selectOptionGlobal by mutableStateOf("Select an option")
+var selectOptionGlobalFecha by mutableStateOf("Select an option")
 @Composable
 fun showData(
     lifecycleScope : CoroutineScope?=null,
@@ -472,29 +481,33 @@ fun showData(
     val context = LocalContext.current
     var options by remember { mutableStateOf<List<String>>(emptyList()) }
 
-    LaunchedEffect(selectedOptionIndex) {
-            try {
-                val responsePredios: Response<ApiResponsePredioSingle> = apiService.getPredio(selectedOptionIndex)
-                withContext(Dispatchers.Main) {
-                    if (responsePredios.isSuccessful) {
-                        val apiResponse = responsePredios.body()
-                        val success = apiResponse?.success ?: false
+    LaunchedEffect(globalSelectedOptionIndexPeriodo){
+        if(globalSelectedOptionIndex!=-1){
+            Toast.makeText(context, "HOLA "+ globalSelectedOptionIndex.toString(), Toast.LENGTH_SHORT).show()
+            val idSeleccionado = globalSelectedOptionIndex+1
+            val responseCasa: Response<ApiResponseCasa> =
+                apiService.getCasas(idSeleccionado)
+            if (responseCasa.isSuccessful) {
+                val apiResponsePeriodo = responseCasa.body()
+                val successPeriodo = apiResponsePeriodo?.success ?: false
 
-                        options =  apiResponse?.predio!!.map { it.responsable }
+                var responsable = apiResponsePeriodo?.casas?.firstOrNull()?.responsable
+                val cantidadCasas: Int = apiResponsePeriodo?.casas?.size ?: 0
 
-                        // Muestra el valor de success en el Toast
-                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-            } catch (e: Exception) {
-                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                textCantidadCasas=cantidadCasas.toString()
+                textResponsable=responsable.toString()
+                //textNumCasas=cantidadCasas.toString()
+                // Muestra el valor de successPeriodo en el Toast
+                Toast.makeText(context, "Success: $textResponsable", Toast.LENGTH_SHORT)
+                    .show()
             }
+        }
+
+
+
     }
+
+
 
     // Row para centrar horizontalmente
     Row(
@@ -532,8 +545,8 @@ fun showData(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
             ) {
-                Text(elemento, fontSize = 18.sp)
-                Text(elemento, fontSize = 18.sp)
+                Text(textResponsable, fontSize = 18.sp)
+                Text(textCantidadCasas, fontSize = 18.sp)
             }
             Row(
                 modifier = Modifier
@@ -713,8 +726,9 @@ fun IconWithComboBox(
                                         onClick = {
                                             // Actualiza el estado cuando se hace clic en el RadioButton
                                             selectedOption = option
+                                            selectOptionGlobalFecha=option
                                             selectedOptionIndexPeriodo = index
-
+                                            globalSelectedOptionIndexPeriodo =index
                                         }
                                     )
                                     Text(option, modifier = Modifier.padding(start = 8.dp))
@@ -736,7 +750,9 @@ fun IconWithComboBox(
                                         onClick = {
                                             // Actualiza el estado cuando se hace clic en el RadioButton
                                             selectedOption = option
+                                            selectOptionGlobal=option
                                             selectedOptionIndex = index
+                                            globalSelectedOptionIndex =index
                                         }
                                     )
                                     Text(option, modifier = Modifier.padding(start = 8.dp))
