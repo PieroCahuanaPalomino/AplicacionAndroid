@@ -32,11 +32,18 @@ fun AppNavigation(){
                 period = backStackEntry.arguments?.getString("period")?: ""
             )
         }
-        composable(route =  AppScreens.VerDatos.route){
+        composable(
+            route = "${AppScreens.VerDatos.route}/{datoNumero}",
+            arguments = listOf(
+                navArgument(name = "datoNumero") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
             VerDatos(
-                navController = navController
+                navController = navController,
+                datoNumero = backStackEntry.arguments?.getInt("datoNumero") ?: 0
             )
         }
+
         composable(route = AppScreens.Gasto_casa.route + "/{name}",
             arguments = listOf(
                 navArgument(name="name"){type = NavType.StringType}
@@ -47,5 +54,6 @@ fun AppNavigation(){
                 name = backStackEntry.arguments?.getString("name")?: ""
             )
         }
+
     }
 }
