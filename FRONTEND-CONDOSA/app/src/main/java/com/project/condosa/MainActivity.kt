@@ -52,6 +52,6 @@ fun GreetingPreview() {
         //HomeContent("user@email.com", "Some Provider")
         //View("User Name", "user@email.com", "Some Provider")
         //GastosPredio(name="Los Rosales", period = "2023-I")
-        GastoPredioeditar()
+        GastoPredioagregar()
     }
 }
