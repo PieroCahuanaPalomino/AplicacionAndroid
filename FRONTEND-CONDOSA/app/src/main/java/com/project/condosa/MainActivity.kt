@@ -23,6 +23,7 @@ import com.project.condosa.ui.components.view.Gastos_casa.GastosContent
 import com.project.condosa.ui.components.view.Gastos_casa.ViewGastos
 import com.project.condosa.ui.theme.CondosaTheme
 import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
+import com.project.condosa.ui.components.view.Initial.Main
 import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,8 +46,7 @@ class MainActivity : ComponentActivity() {
                     //Greeting("Android Rama")
 
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
-                    HomeContent("user@email.com", "Some Provider")
-                    View("User Name", "user@email.com", "Some Provider",lifecycleScope)
+                    Main("User Name", "user@email.com", "Some Provider",lifecycleScope)
                     //GastosPredio(name="Los Rosales", period = "2023-I")
                 }
             }

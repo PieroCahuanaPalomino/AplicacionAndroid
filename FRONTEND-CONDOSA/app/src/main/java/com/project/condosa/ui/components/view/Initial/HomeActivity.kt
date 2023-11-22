@@ -93,6 +93,11 @@ import kotlinx.coroutines.withContext
 import kotlin.random.Random
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
 
+@Composable
+fun Main(name :String?, email :String?, provider:String?,lifecycleScope : CoroutineScope?=null,){
+    HomeContent(email = name, provider = provider)
+    View(name = "Piero", email = "Piero", provider = "Piero" ,lifecycleScope)
+}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
