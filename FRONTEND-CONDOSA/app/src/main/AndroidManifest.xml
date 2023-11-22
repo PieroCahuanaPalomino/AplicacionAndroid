@@ -3,10 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
-<<<<<<< HEAD
 
-=======
->>>>>>> ed94fbaabfaa584dc97c985bac27abbf12169df6
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
