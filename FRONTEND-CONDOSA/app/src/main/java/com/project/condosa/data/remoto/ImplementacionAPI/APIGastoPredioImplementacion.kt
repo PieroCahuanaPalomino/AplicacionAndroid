@@ -7,7 +7,7 @@ import com.project.condosa.domain.model.TipoGastoPredio
 import com.project.condosa.domain.model.TipoGastoPredioResponse
 
 class APIGastoPredioImplementacion {
-    private val apiGastoPredioService = RetrofitClient.getInstance()
+    private val apiGastoPredioService = RetrofitClient.getInstanceGasto()
 
 
     suspend fun getTipoGastosComunes(): List<TipoGastoPredio> {
