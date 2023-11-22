@@ -31,10 +31,17 @@ fun AppNavigation(){
                 period = backStackEntry.arguments?.getString("period")?: ""
             )
         }
-        composable(route =  AppScreens.VerDatos.route){
+        composable(
+            route = "${AppScreens.VerDatos.route}/{datoNumero}",
+            arguments = listOf(
+                navArgument(name = "datoNumero") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
             VerDatos(
-                navController = navController
+                navController = navController,
+                datoNumero = backStackEntry.arguments?.getInt("datoNumero") ?: 0
             )
         }
+
     }
 }

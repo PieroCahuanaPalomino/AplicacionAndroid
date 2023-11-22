@@ -80,4 +80,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     implementation("androidx.navigation:navigation-compose:2.6.0-alpha06")
+    implementation("androidx.compose.foundation:foundation:1.0.0")
+    implementation("androidx.compose.foundation:foundation-layout:1.0.0")
+
 }

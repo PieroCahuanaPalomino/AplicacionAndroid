@@ -304,7 +304,7 @@ fun View(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .clickable {
-                        navController.navigate(route = AppScreens.VerDatos.route)
+                        navController.navigate(route = "${AppScreens.VerDatos.route}/$numeroId")
                     }
                     .fillMaxWidth()
                     .heightIn(72.dp)
@@ -466,6 +466,7 @@ fun View(
 
 var selectedOptionIndex by mutableStateOf(-1)
 var selectedOptionIndexPeriodo by mutableStateOf(-1)
+var numeroId by mutableStateOf(0)
 
 var globalSelectedOptionIndexPeriodo by mutableStateOf(-1)
 var globalSelectedOptionIndex by mutableStateOf(-1)
@@ -497,6 +498,7 @@ fun showData(
                 var responsable = apiResponsePeriodo?.casas?.firstOrNull()?.responsable
                 val cantidadCasas: Int = apiResponsePeriodo?.casas?.size ?: 0
 
+                numeroId=idSeleccionado
                 textCantidadCasas=cantidadCasas.toString()
                 textResponsable=responsable.toString()
                 //textNumCasas=cantidadCasas.toString()
@@ -592,7 +594,7 @@ fun IconWithComboBox(
         LaunchedEffect(selectedOptionIndex) {
             if (/*expanded &&*/ selectedOptionIndex != -1) {
                 try {
-                    val idSeleccionado = selectedOptionIndex
+                    val idSeleccionado = selectedOptionIndex+1
                     val responsePeriodo: Response<ApiResponsePredioPeriodo> =
                         apiService.getPrediosPeriodo(idSeleccionado)
 
@@ -703,9 +705,10 @@ fun IconWithComboBox(
         Dialog(
             onDismissRequest = { expanded = false },
         ) {
-            Column(Modifier.background(Color.White)) {
+            Column(Modifier.background(Color.White)
+                .height(400.dp)) {
                 Text(
-                    text = "Pick something from the list",
+                    text = "Seleccione la opcion deseada",
                     style = MaterialTheme.typography.subtitle1,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -772,11 +775,11 @@ fun IconWithComboBox(
                         .padding(horizontal = 8.dp, vertical = 2.dp)
                 ) {
                     TextButton(onClick = { expanded = false }) {
-                        Text("Cancel")
+                        Text("Cerrar")
                     }
                     Spacer(modifier = Modifier.width(8.dp)) // Espacio entre elementos
                     TextButton(onClick = { expanded = false }) {
-                        Text("Done")
+                        Text("Aceptar")
                     }
                 }
             }
