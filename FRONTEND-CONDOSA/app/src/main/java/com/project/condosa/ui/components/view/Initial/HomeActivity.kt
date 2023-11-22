@@ -1,11 +1,17 @@
 package com.project.condosa.ui.components.view.Initial
 
 import android.annotation.SuppressLint
+import android.widget.RadioGroup
+import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,18 +22,30 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,66 +62,135 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.lifecycleScope
+import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.project.condosa.R
+import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
+import com.project.condosa.domain.model.ApiResponsePredio
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.lifecycle.lifecycleScope
+import com.project.condosa.domain.model.ApiResponsePredioPeriodo
+import com.project.condosa.domain.model.ApiResponsePredioSingle
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
+
+var selectedOptionIndex : Int= -1
+var selectedOptionIndexPeriodo : Int= -1
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun HomeContent(email: String?, provider: String?) {
-    val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center // Centrar horizontalmente
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.arrow),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "Emitir Recibos",
-                            color = Color.White
-                        )
-                    }
-                },
-                backgroundColor = bluePaletColor // Usar el color definido en color.xml
-            )
-        },
-        content = {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Top
-            ) {
-                Spacer(modifier = Modifier.height(56.dp)) // 56dp es la altura de la barra azul
+    @Composable
+    fun HomeContent(email: String?, provider: String?) {
+        val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
+    
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center // Centrar horizontalmente
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.arrow),
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Emitir Recibos",
+                                color = Color.White
+                            )
+                        }
+                    },
+                    backgroundColor = bluePaletColor // Usar el color definido en color.xml
+                )
+            },
+            content = {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    Spacer(modifier = Modifier.height(56.dp)) // 56dp es la altura de la barra azul
+                }
             }
-        }
-    )
-}
+        )
+    }
 
 
-@Composable
+
+
+
+
+ @Suppress("UNUSED_VARIABLE")
+ @SuppressLint("CoroutineCreationDuringComposition")
+ @Composable
 fun View(
     name: String,
     email: String?,
     provider: String?,
-    modifier: Modifier = Modifier,
-
-    ) {
-    val iconResourceIdHome: Int = R.drawable.home  // Asigna el valor correcto del recurso de icono
+    lifecycleScope : CoroutineScope?=null,
+    modifier: Modifier = Modifier
+)
+{
+    val iconResourceIdHome: Int =
+        R.drawable.home  // Asigna el valor correcto del recurso de icono
     val iconResourceIdCalendar: Int =
         R.drawable.calenderio  // Asigna el valor correcto del recurso de icono
-
-
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
     val fonPantalla = colorResource(id = R.color.fonPantalla) // Obtener el color de color.xml
     val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
-    val redPaletCircle = colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
+    val redPaletCircle =
+        colorResource(id = R.color.redPaletCircle) // Obtener el color de color.xml
 
+    var prediosResponse: ApiResponsePredio? by remember { mutableStateOf(null) }
+    val apiService = ApiPredioServiceImplementation()
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+    var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        lifecycleScope?.launch(Dispatchers.IO) {
+            try {
+                val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
+                withContext(Dispatchers.Main) {
+                    if (responsePredios.isSuccessful) {
+                        val apiResponse = responsePredios.body()
+                        val success = apiResponse?.success ?: false
+
+                        options =  apiResponse?.predios!!.map { it.predio }
+
+                        // Muestra el valor de success en el Toast
+                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
     Column(
         modifier = modifier.run {
             var background = fillMaxWidth()
@@ -113,9 +200,11 @@ fun View(
 
         }
     ) {
-        Column(modifier = Modifier
-            .padding(8.dp)
-            .padding(start = 45.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .padding(start = 45.dp)
+        ) {
             Text(
                 text = "Bienvenido",
                 fontSize = 30.sp,
@@ -129,30 +218,51 @@ fun View(
                     text = "Email: $it",
                     fontSize = 15.sp,
                     modifier = Modifier.padding(bottom = 4.dp),
-                    color= grisPaletLet
+                    color = grisPaletLet
                 )
             }
             /*
-            provider?.let {
-                Text(
-                    text = "Provider: $it",
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-            }*/
+        provider?.let {
+            Text(
+                text = "Provider: $it",
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }*/
         }
 
         Spacer(modifier = Modifier.weight(0.5f))
 
-        IconWithComboBox(predioText = "PREDIO",padding=50.dp,condicion = false,iconResourceIdHome)
+        IconWithComboBox(
+            predioText = "PREDIO",
+            padding = 0.dp,
+            condicion = false,
+            iconResourceIdHome,
+            options,false,
+        ) {
+            //openDialog = true
+        }
+
+
+        //(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
         Spacer(modifier = Modifier.weight(0.2f))
 
-        IconWithComboBox(predioText = "PERIODO CUOTA",padding=7.dp,condicion = true,iconResourceIdCalendar)
+        IconWithComboBox(
+            predioText = "PERIODO CUOTA",
+            padding = 0.dp,
+            condicion = true,
+            iconResourceIdCalendar,
+            optionsPeriodo,true,
+        ) {
+            //openDialog = true
+        }
+
+        //Dialog(showDialog = openDialog.value, dismissDialog = {openDialog.value=false})
 
         Spacer(modifier = Modifier.weight(1f))
 
-        showData()
+        showData(lifecycleScope)
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -167,10 +277,15 @@ fun View(
                     .fillMaxWidth()
                     .heightIn(72.dp)
                     .padding(8.dp)
-                    .background(bluePaletColor, shape = RoundedCornerShape(10)) // Establece el color de fondo del Box a bluePaletColor
+                    .background(
+                        bluePaletColor,
+                        shape = RoundedCornerShape(10)
+                    ) // Establece el color de fondo del Box a bluePaletColor
             ) {
-                Text("Ver datos", color = Color.White,
-                    style = TextStyle(fontWeight = FontWeight.Bold,
+                Text(
+                    "Ver datos", color = Color.White,
+                    style = TextStyle(
+                        fontWeight = FontWeight.Bold,
                         fontSize = 16.sp // Establece el tamaño del texto a 18 sp
                     ),
                 ) // Mantiene el color del texto en blanco
@@ -192,14 +307,18 @@ fun View(
                         .fillMaxWidth()
                         .fillMaxHeight() // Ocupa toda la altura del Column
                         .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                        .background(bluePaletColor, shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                        .background(
+                            bluePaletColor,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         "Registrar gastos del predio",
                         color = Color.White,
                         textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
                             fontSize = 16.sp // Establece el tamaño del texto a 18 sp
                         ),
 
@@ -223,7 +342,8 @@ fun View(
                             "Segundo botón",
                             color = Color.White,
                             textAlign = TextAlign.Center,
-                            style = TextStyle(fontWeight = FontWeight.Bold,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp // Establece el tamaño del texto a 18 sp
                             ),
 
@@ -250,14 +370,18 @@ fun View(
                         .fillMaxWidth()
                         .fillMaxHeight() // Ocupa toda la altura del Column
                         .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                        .background(bluePaletColor, shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
+                        .background(
+                            bluePaletColor,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         "Registrar gastos de la casa",
                         color = Color.White,
                         textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
                             fontSize = 16.sp // Establece el tamaño del texto a 18 sp
                         ),
 
@@ -281,7 +405,8 @@ fun View(
                             "Segundo botón",
                             color = Color.White,
                             textAlign = TextAlign.Center,
-                            style = TextStyle(fontWeight = FontWeight.Bold,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp // Establece el tamaño del texto a 18 sp
                             ),
 
@@ -298,20 +423,45 @@ fun View(
 
                 }
             }
-
-
-
         }
     }
 }
 
 
-
-
 @Composable
-fun showData(elemento: String = "-") {
+fun showData(
+    lifecycleScope : CoroutineScope?=null,
+    elemento: String = "-") {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
+    val apiService = ApiPredioServiceImplementation()
+    var responsable by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
+    var options by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    LaunchedEffect(selectedOptionIndex) {
+            try {
+                val responsePredios: Response<ApiResponsePredioSingle> = apiService.getPredio(selectedOptionIndex)
+                withContext(Dispatchers.Main) {
+                    if (responsePredios.isSuccessful) {
+                        val apiResponse = responsePredios.body()
+                        val success = apiResponse?.success ?: false
+
+                        options =  apiResponse?.predio!!.map { it.responsable }
+
+                        // Muestra el valor de success en el Toast
+                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
 
     // Row para centrar horizontalmente
     Row(
@@ -353,8 +503,9 @@ fun showData(elemento: String = "-") {
                 Text(elemento, fontSize = 18.sp)
             }
             Row(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(top = 30.dp,end=190.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 30.dp, end = 190.dp),
                 horizontalArrangement = Arrangement.Center // Espacio entre los textos
             ) {
                 Text("Cargo", fontSize = 18.sp,
@@ -366,18 +517,55 @@ fun showData(elemento: String = "-") {
     }
 }
 
-@Composable
-fun IconWithComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId: Int,
-) {
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+@Composable
+fun IconWithComboBox(
+    predioText: String,
+    padding: Dp,
+    condicion: Boolean,
+    iconId: Int,
+    options: List<String>,
+    periodoBoolean: Boolean,
+    openDialog: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("Opción 1", "Opción 2", "Opción 3")
     var selectedOption by remember { mutableStateOf("Select an option") }
 
     val iconVector = ImageVector.vectorResource(id = iconId)
-    val dropdownOffset = DpOffset(145.dp, 18.dp) // Ajusta la posición vertical del menú desplegable
-    val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
+    val bluePaletColor = colorResource(id = R.color.bluePalet)
 
+    val apiService = ApiPredioServiceImplementation()
+    var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
+    val context = LocalContext.current
+
+    if(periodoBoolean){
+        LaunchedEffect(selectedOptionIndex) {
+            if (/*expanded &&*/ selectedOptionIndex != -1) {
+                try {
+                    val idSeleccionado = selectedOptionIndex
+                    val responsePeriodo: Response<ApiResponsePredioPeriodo> =
+                        apiService.getPrediosPeriodo(idSeleccionado)
+
+                    //val responseText: Response=
+                    if (responsePeriodo.isSuccessful) {
+                        val apiResponsePeriodo = responsePeriodo.body()
+                        val successPeriodo = apiResponsePeriodo?.success ?: false
+
+                        optionsPeriodo = apiResponsePeriodo?.gastos?.map { it.periodo } ?: emptyList()
+
+                        // Muestra el valor de successPeriodo en el Toast
+                        Toast.makeText(context, "Success: $optionsPeriodo", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } catch (e: Exception) {
+                    // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                    Toast.makeText(context, "ErrorPeriodo: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
     Row(
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
@@ -404,42 +592,41 @@ fun IconWithComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId:
                             Color(android.graphics.Color.parseColor("#eeeff4")),
                             shape = RoundedCornerShape(30)
                         )
-                        .size(60.dp) // Aumenta el tamaño del icono "Home"
-                        .clickable { expanded = true }
-                        .padding(2.dp),
+                        .size(60.dp)
+                        .clickable { expanded = true },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = iconVector,
                         contentDescription = "Icono Home",
                         tint = bluePaletColor,
-                        modifier = Modifier.size(55.dp) // Establece el tamaño del icono
-
+                        modifier = Modifier.size(55.dp)
                     )
                 }
-                Spacer(modifier = Modifier.width(35.dp)) // Aumenta el espacio entre el icono y los elementos a la derecha
+                Spacer(modifier = Modifier.width(35.dp))
 
                 Box(
                     modifier = Modifier.clickable { expanded = true },
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Column(
-                        modifier = Modifier.padding(top = 20.dp) // Establece el padding en la parte superior (16.dp en este ejemplo)
-                    ){
+                        modifier = Modifier.padding(top = 20.dp)
+                    ) {
                         Row(
                             modifier = Modifier.width(200.dp),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
-
                         ) {
-                            Text(text = selectedOption,
+                            Text(
+                                text = selectedOption,
                                 modifier = Modifier.padding(start = 1.dp),
                                 style = TextStyle(fontStyle = FontStyle.Italic)
                             )
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.arrow_bottom),
                                 contentDescription = "Icono Flecha",
-                                modifier = Modifier.padding(start = 4.dp)) // Ajusta el espaciado a tu preferencia
+                                modifier = Modifier.padding(start = 4.dp)
+                            )
                         }
                         Row(
                             modifier = Modifier
@@ -448,34 +635,99 @@ fun IconWithComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId:
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Divider(
-                                color = Color.Black, // Color del divider
-                                thickness = 1.dp,     // Grosor del divider
+                                color = Color.Black,
+                                thickness = 1.dp,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(1.dp) // Establece la altura deseada al Divider
+                                    .height(1.dp)
                             )
                         }
                     }
                 }
             }
         }
+    }
 
-        DropdownMenu(
-            expanded = expanded,
+    val redPaletCircleColor = colorResource(id = R.color.redPaletCircle)
+
+    if (expanded) {
+        Dialog(
             onDismissRequest = { expanded = false },
-            offset = dropdownOffset
         ) {
-            options.forEach { option ->
-                DropdownMenuItem(
-                    onClick = {
-                        selectedOption = option
-                        expanded = false
-                    }
+            Column(Modifier.background(Color.White)) {
+                Text(
+                    text = "Pick something from the list",
+                    style = MaterialTheme.typography.subtitle1,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+                FlowRow(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .weight(1f)
                 ) {
-                    Text(option)
+                    if(periodoBoolean){
+                        for ((index, option) in optionsPeriodo.withIndex()) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = index == selectedOptionIndexPeriodo,
+                                        onClick = {
+                                            // Actualiza el estado cuando se hace clic en el RadioButton
+                                            selectedOption = option
+                                            selectedOptionIndexPeriodo = index
+
+                                        }
+                                    )
+                                    Text(option, modifier = Modifier.padding(start = 8.dp))
+                                }
+                            }
+                        }
+                    }else{
+                        for ((index, option) in options.withIndex()) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = index == selectedOptionIndex,
+                                        onClick = {
+                                            // Actualiza el estado cuando se hace clic en el RadioButton
+                                            selectedOption = option
+                                            selectedOptionIndex = index
+                                        }
+                                    )
+                                    Text(option, modifier = Modifier.padding(start = 8.dp))
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                FlowRow(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                ) {
+                    TextButton(onClick = { expanded = false }) {
+                        Text("Cancel")
+                    }
+                    Spacer(modifier = Modifier.width(8.dp)) // Espacio entre elementos
+                    TextButton(onClick = { expanded = false }) {
+                        Text("Done")
+                    }
                 }
             }
         }
     }
 }
-

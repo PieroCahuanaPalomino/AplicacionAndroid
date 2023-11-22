@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
@@ -22,6 +24,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
@@ -43,6 +52,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.condosa.R
+import com.project.condosa.ui.components.view.GastoPredio.poppins
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -151,57 +161,40 @@ fun ViewGastos(
 
         // Quinta fila con dos elementos Box que ocupan el mismo espacio
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 15.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                modifier = Modifier
-                    .height(100.dp)
-                    .weight(0.5f)
+            Button(
+                onClick = { /* Acciones */ },
+                contentPadding = PaddingValues(horizontal = 35.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                //modifier = Modifier.padding(top = 8.dp),
+                shape = RoundedCornerShape(10.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .weight(2f) // Peso del 66.67% (2/3)
-                        .width(150.dp)
-                        .height(80.dp) // Ocupa toda la altura del Column
-                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                        .background(bluePaletColor, shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    androidx.compose.material3.Text(
                         "Cancelar",
                         color = Color.White,
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp // Establece el tamaño del texto a 18 sp
-                        ),
-
-                        )
+                        fontFamily = poppins,
+                    )
                 }
             }
-            Column(
-                modifier = Modifier
-                    .height(100.dp)
-                    .weight(0.5f)
+            Spacer(modifier = Modifier.width(16.dp))
+            Button(
+                onClick = { /* Acciones */ },
+                contentPadding = PaddingValues(horizontal = 35.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                //modifier = Modifier.padding(top = 8.dp),
+                shape = RoundedCornerShape(10.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .weight(2f) // Peso del 66.67% (2/3)
-                        .width(150.dp)
-                        .height(80.dp)
-                        .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 0.dp)
-                        .background(bluePaletColor, shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "Finalizar Registro",
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    androidx.compose.material3.Text(
+                        "Finalizar registro",
                         color = Color.White,
-                        textAlign = TextAlign.Center,
-                        style = TextStyle(fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp // Establece el tamaño del texto a 18 sp
-                        ),
-
-                        )
+                        fontFamily = poppins,
+                    )
                 }
             }
 
@@ -213,7 +206,7 @@ fun ViewGastos(
 
 
 @Composable
-fun MostrarDataGastos(elemento: String = "-") {
+fun MostrarDataGastos(nom_prop: String = "Manuel Avila", estado: String = "Activo") {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
 
@@ -221,7 +214,7 @@ fun MostrarDataGastos(elemento: String = "-") {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 20.dp),
+            .padding(horizontal = 20.dp, vertical = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
@@ -234,7 +227,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text(nom_prop, fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Column(
@@ -247,7 +240,7 @@ fun MostrarDataGastos(elemento: String = "-") {
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center
             )
-            Text(elemento, fontSize = 18.sp, textAlign = TextAlign.Center)
+            Text(estado, fontSize = 18.sp, textAlign = TextAlign.Center)
         }
 
         Box(
@@ -264,62 +257,102 @@ fun MostrarDataGastos(elemento: String = "-") {
 
 
 @Composable
-fun muestraGastos(elemento: String = "Texto"){
+fun muestraGastos(){
 
     val iconResourceEditar: Int =
         R.drawable.gastos_casas_vector6  // Asigna el valor correcto del recurso de icono
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
 
-    // Row para centrar horizontalmente
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // Una sola Column para las dos filas
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente los elementos
-        ) {
-            // Tercera fila con dos textos "casas"
-            Row(
+    // Tabla Gastos de Casa perteneciente a Predio
+    Box (modifier= Modifier
+        .padding(horizontal = 10.dp)
+        .clip(RoundedCornerShape(4))){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(width = 400.dp, height = 340.dp)
+                .background(Color(0xFFFFFFFF))
+                .padding(vertical = 8.dp))
+        {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp),
-                horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
-
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp)
             ) {
-                Text(
-                    text = "Gasto",
-                    fontSize = 18.sp,
-                    color = bluePaletColorLet,
-                    style = TextStyle(fontWeight = FontWeight.Bold),
-                )
-                Text(
-                    text = "Monto(s/)",
-                    fontSize = 18.sp,
-                    color = bluePaletColorLet,
-                    style = TextStyle(fontWeight = FontWeight.Bold)
-                )
-                Text(
-                    text = " ",
-                    fontSize = 18.sp,
-                    color = bluePaletColorLet,
-                    style = TextStyle(fontWeight = FontWeight.Bold)
-                )
-            }
-
-            repeat(7) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color(0xFF000080))
+                        .clip(RoundedCornerShape(0.dp, 0.dp, 8.dp, 8.dp))
                 ) {
-                    Text("Texto", fontSize = 18.sp)
-                    Text("Texto", fontSize = 18.sp)
-                    Icon(
-                        painter = painterResource(id = iconResourceEditar),
-                        contentDescription = "Icono",
-                        tint = bluePaletColorLet,
-                        modifier = Modifier.size(24.dp)
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material3.Text(
+                            text = "Gasto",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(2.5f)
+                        )
+                        androidx.compose.material3.Text(
+                            text = "Monto (S/)",
+                            fontSize = 16.sp,
+                            fontFamily = poppins,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(1.5f)
+                        )
+                        androidx.compose.material3.Text(
+                            text = "",
+                            fontSize = 16.sp,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.weight(0.5f)
+                        )
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .width(400.dp) // Establece el ancho deseado para la tabla
+                        .background(Color(0xFFF6F8FF)) // Color de fondo de la tabla
+                    // contentPadding = PaddingValues(horizontal = 14.dp)
+                ) {
+                    items(20) { index ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 4.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+
+                            ) {
+                            androidx.compose.material3.Text(
+                                text = "Casa_gasto ${index + 1}",
+                                fontSize = 15.sp,
+                                fontFamily = poppins,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.weight(2f)
+                            )
+                            androidx.compose.material3.Text(
+                                text = "S/2000.00",
+                                fontSize = 15.sp,
+                                fontFamily = poppins,
+                                modifier = Modifier.weight(1.5f)
+                            )
+                            androidx.compose.material3.Icon(
+                                ImageVector.vectorResource(id = iconResourceEditar),
+                                contentDescription = "Editar",
+                                tint = Color(0xFF000080)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -337,26 +370,28 @@ fun botonesAuxiliares() {
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(bottom = 10.dp),
+            .padding(horizontal = 20.dp, vertical = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        // Botón Agregar Gastos
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(90.dp)
-                .background(bluePaletColor, shape = RoundedCornerShape(10))
+        //Boton agregar gastos
+        Button(
+            onClick = { /* Acciones */ },
+            contentPadding = PaddingValues(horizontal = 9.dp, vertical = 8.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+            modifier = Modifier.padding(top = 8.dp),
+            shape = RoundedCornerShape(10.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                androidx.compose.material3.Icon(
                     imageVector = ImageVector.vectorResource(id = iconResourceAgregarGastos),
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(55.dp)
+                    contentDescription = "Agregar Gastos"
                 )
-                Text("Añadir Gastos", color = Color.White, style = TextStyle(fontWeight = FontWeight.Bold))
+                Spacer(modifier = Modifier.width(8.dp))
+                androidx.compose.material3.Text(
+                    "Añadir gasto",
+                    color = Color.White,
+                    fontFamily = poppins,
+                )
             }
         }
 
@@ -367,38 +402,43 @@ fun botonesAuxiliares() {
                 .size(70.dp)
                 .background(whitePaletColor, shape = RoundedCornerShape(10))
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = iconResourceDownload),
-                    contentDescription = null,
-                    tint = Color.Blue,
-                    modifier = Modifier.size(55.dp)
-                )
-                Text("Descargar", color = Color.White, style = TextStyle(fontWeight = FontWeight.Bold))
-            }
+            Button(
+                onClick = {
+                    /* Acción para descargar */
+                },
+                contentPadding = PaddingValues(all = 2.dp),
+                colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.padding(8.dp),
+                content = {
+                    androidx.compose.material3.Icon(
+                        //imageVector = painterResource(id = R.drawable.download_24px),
+                        imageVector = ImageVector.vectorResource(id = iconResourceDownload),
+                        contentDescription = "Descargar",
+                        tint = Color(0xFF000080) // Color azul
+                    )
+                }
+            )
         }
 
         // Botón Compartir
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(70.dp)
-                .background(whitePaletColor, shape = RoundedCornerShape(10))
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
-                Icon(
+        Button(
+            onClick = {
+                /* Acción para descargar */
+            },
+            contentPadding = PaddingValues(all = 2.dp),
+            colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier.padding(8.dp),
+            content = {
+                androidx.compose.material3.Icon(
+                    //imageVector = painterResource(id = R.drawable.download_24px),
                     imageVector = ImageVector.vectorResource(id = iconResourceCompartir),
-                    contentDescription = null,
-                    tint = Color.Blue,
-                    modifier = Modifier.size(55.dp)
+                    contentDescription = "Compartir",
+                    tint = Color(0xFF000080) // Color azul
                 )
-                Text("Compartir", color = Color.White, style = TextStyle(fontWeight = FontWeight.Bold))
             }
-        }
+        )
     }
 }
 
