@@ -1,6 +1,7 @@
 package com.project.condosa.ui.components.view.Gastos_casa
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -52,7 +55,16 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.condosa.R
+import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoCasaImplementacion
+import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoPredioImplementacion
+import com.project.condosa.domain.model.GastoPredio
+import com.project.condosa.domain.model.ListaCasasResponse
+import com.project.condosa.domain.model.TipoGastoPredio
 import com.project.condosa.ui.components.view.GastoPredio.poppins
+import com.project.condosa.ui.components.view.GastoPredio.tipoGastomonto
+import com.project.condosa.ui.components.view.Initial.selectedOptionIndex
+import kotlinx.coroutines.CoroutineScope
+import retrofit2.Response
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -92,6 +104,7 @@ fun GastosContent(email: String?, provider: String?) {
             }
         }
     )
+
 }
 
 
@@ -110,6 +123,10 @@ fun ViewGastos(
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
     val fonPantalla = colorResource(id = R.color.fonPantalla) // Obtener el color de color.xml
     val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
+
+    var idSeleccionado by remember { mutableStateOf(-1) }
+
+    val apiGastos = APIGastoCasaImplementacion()
 
     Column(
         modifier = modifier.run {
@@ -144,14 +161,24 @@ fun ViewGastos(
 
         //Spacer(modifier = Modifier.weight(0.5f))
 
-        GastosIconComboBox(predioText = "No de Casa",padding=50.dp,condicion = false,iconResourceNCasa)
+        GastosIconComboBox(
+            predioText = "No de Casa",
+            padding=50.dp,
+            condicion = false,
+            iconResourceNCasa,
+        )
 
         Spacer(modifier = Modifier.weight(0.2f))
 
-        MostrarDataGastos()
-
+        //MostrarDataGastos()
+        /*MostrarDataGastos(
+            idSeleccionado,
+            listaCasas,
+            onIdSeleccionadoChange = { idSeleccionado = it }
+        )*/
         //Spacer(modifier = Modifier.weight(1f))
-
+        //val apiGastos = APIGastoCasaImplementacion()
+        //muestraGastos(apiGastos)
         muestraGastos()
 
         Spacer(modifier = Modifier.weight(0.5f))
@@ -206,10 +233,11 @@ fun ViewGastos(
 
 
 @Composable
-fun MostrarDataGastos(nom_prop: String = "Manuel Avila", estado: String = "Activo") {
+fun MostrarDataGastos(
+    nom_prop: String="Fabrizio Quintana" , estado: String="Habitada"
+) {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
-
     // Row para centrar horizontalmente
     Row(
         modifier = Modifier
@@ -254,7 +282,6 @@ fun MostrarDataGastos(nom_prop: String = "Manuel Avila", estado: String = "Activ
         }
     }
 }
-
 
 @Composable
 fun muestraGastos(){
@@ -317,6 +344,24 @@ fun muestraGastos(){
                         )
                     }
                 }
+                var tiposGastos: List<TipoGastoPredio> by remember { mutableStateOf((emptyList())) }
+                var descripcionGastos by remember { mutableStateOf<List<GastoPredio>>(emptyList()) }
+
+
+                LaunchedEffect(Unit) {
+                    val apiService = APIGastoPredioImplementacion()
+                    tiposGastos = apiService.getTipoGastosComunes()
+                    val nuevosGastos = mutableListOf<GastoPredio>()
+                    tiposGastos.forEach { tipoGasto ->
+                        val gastos = apiService.getGastosComunesTipo(tipoGasto.id_tipo_gasto) ?: emptyList()
+                        nuevosGastos.addAll(gastos)
+                    }
+                    descripcionGastos = nuevosGastos
+                }
+
+
+                val tipoGastomonto = tipoGastomonto(descripcionGastos.size)
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -324,7 +369,9 @@ fun muestraGastos(){
                         .background(Color(0xFFF6F8FF)) // Color de fondo de la tabla
                     // contentPadding = PaddingValues(horizontal = 14.dp)
                 ) {
-                    items(20) { index ->
+
+                    items(descripcionGastos.size) { index ->
+                        val tipoGasto = descripcionGastos[index]
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -334,20 +381,20 @@ fun muestraGastos(){
 
                             ) {
                             androidx.compose.material3.Text(
-                                text = "Casa_gasto ${index + 1}",
+                                text = tipoGasto.descripcion,
                                 fontSize = 15.sp,
                                 fontFamily = poppins,
                                 fontWeight = FontWeight.Normal,
                                 modifier = Modifier.weight(2f)
                             )
                             androidx.compose.material3.Text(
-                                text = "S/2000.00",
+                                text = "S/." + tipoGastomonto[index],
                                 fontSize = 15.sp,
                                 fontFamily = poppins,
                                 modifier = Modifier.weight(1.5f)
                             )
                             androidx.compose.material3.Icon(
-                                ImageVector.vectorResource(id = iconResourceEditar),
+                                imageVector = Icons.Default.Edit,
                                 contentDescription = "Editar",
                                 tint = Color(0xFF000080)
                             )
@@ -443,12 +490,69 @@ fun botonesAuxiliares() {
 }
 
 @Composable
-fun GastosIconComboBox(predioText: String, padding: Dp, condicion:Boolean, iconId: Int,
+fun GastosIconComboBox(
+    predioText: String,
+    padding: Dp,
+    condicion:Boolean,
+    iconId: Int,
+    //mostrarDataGastos: (String, String) -> Unit
 ) {
-
+    var lifecycleScope : CoroutineScope?=null
     var expanded by remember { mutableStateOf(false) }
-    val options = listOf("1", "2", "3","4","5","6","7","8","9","10","11","12")
+    //val options = listOf("1", "2", "3","4","5","6","7","8","9","10","11","12")
+    var options by remember { mutableStateOf(emptyList<Int>()) }
+    var Responsable by remember { mutableStateOf("") }
+    var Estado by remember { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf("Selecciona la cantidad") }
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        try {
+            val listaIdCasas = APIGastoCasaImplementacion()
+
+            val idSeleccionado = selectedOptionIndex
+            val responseCasa : Response<ListaCasasResponse> =
+                listaIdCasas.getListaCasasDelPredio(1)
+            if(responseCasa.isSuccessful){
+                val list = responseCasa.body()
+                val num = list?.casas?.mapNotNull { it.idCasa }
+                if (num != null) {
+                    options=num
+                }
+                print("Se detecto")
+                print(num)
+                Toast.makeText(context, "Success: $num", Toast.LENGTH_SHORT)
+                    .show()
+                val responsable: String?
+                val estado: String?
+
+                // Suponiendo que "selectedOptionIndex" representa el índice seleccionado
+                val idSeleccionado = selectedOptionIndex
+
+                // Verificar si el ID seleccionado está dentro del rango de la lista de casas
+                if (idSeleccionado >= 0 && idSeleccionado < list?.casas?.size ?: 0) {
+                    responsable = list?.casas?.get(idSeleccionado)?.Responsable
+                    estado = list?.casas?.get(idSeleccionado)?.estado
+                    if (responsable != null) {
+                        Responsable=responsable
+                    }
+                    if (estado != null) {
+                        Estado=estado
+                    }
+                } else {
+                    // Manejar el caso cuando el ID seleccionado está fuera del rango
+                    responsable = "No encontrado"
+                    estado = "No encontrado"
+                }
+            }
+
+        } catch (e: Exception) {
+            // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+            "eRROR"
+        }
+    }
+    /*LaunchedEffect(selectedOptionIndex){
+
+    }*/
 
     val iconVector = ImageVector.vectorResource(id = iconId)
     val dropdownOffset = DpOffset(145.dp, 18.dp) // Ajusta la posición vertical del menú desplegable
@@ -535,7 +639,14 @@ fun GastosIconComboBox(predioText: String, padding: Dp, condicion:Boolean, iconI
                 }
             }
         }
-
+        val idToNameMap = mapOf(
+            1 to "Casa 1",
+            2 to "Casa 2",
+            3 to "Casa 3",
+            4 to "Casa 4",
+            5 to "Casa 5"
+            // Añade más elementos según tu caso...
+        )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -544,13 +655,16 @@ fun GastosIconComboBox(predioText: String, padding: Dp, condicion:Boolean, iconI
             options.forEach { option ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedOption = option
+                        selectedOption = idToNameMap[option] ?: "" // Asigna el nombre de la casa según el ID
                         expanded = false
                     }
                 ) {
-                    Text(option)
+                    Text(idToNameMap[option] ?: "") // Muestra el nombre de la casa en el DropdownMenuItem
                 }
             }
         }
     }
+    Responsable="Fabrizio Quintana"
+    Estado="Habitada"
+    MostrarDataGastos(nom_prop = Responsable, estado = Estado)
 }
