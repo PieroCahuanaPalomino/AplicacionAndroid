@@ -93,6 +93,8 @@ import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWi
 
 var selectedOptionIndex : Int= -1
 var selectedOptionIndexPeriodo : Int= -1
+
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun HomeContent(email: String?, provider: String?) {
@@ -544,6 +546,8 @@ fun IconWithComboBox(
                     val idSeleccionado = selectedOptionIndex
                     val responsePeriodo: Response<ApiResponsePredioPeriodo> =
                         apiService.getPrediosPeriodo(idSeleccionado)
+
+                    //val responseText: Response=
                     if (responsePeriodo.isSuccessful) {
                         val apiResponsePeriodo = responsePeriodo.body()
                         val successPeriodo = apiResponsePeriodo?.success ?: false

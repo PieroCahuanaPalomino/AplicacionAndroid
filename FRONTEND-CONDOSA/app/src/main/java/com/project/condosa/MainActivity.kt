@@ -44,26 +44,6 @@ class MainActivity : ComponentActivity() {
 
                     //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
                     HomeContent("user@email.com", "Some Provider")
-                    /*
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        try {
-                            val response: Response<ApiResponsePredio> = apiService.getPredios()
-                            withContext(Dispatchers.Main) {
-                                if (response.isSuccessful) {
-                                    val apiResponse = response.body()
-                                    val success = apiResponse?.success ?: false
-
-                                    // Muestra el valor de success en el Toast
-                                    Toast.makeText(this@MainActivity, "Success: $success", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        } catch (e: Exception) {
-                            // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }*/
                     View("User Name", "user@email.com", "Some Provider",lifecycleScope)
                     //GastosPredio(name="Los Rosales", period = "2023-I")
                 }
