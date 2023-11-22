@@ -85,7 +85,8 @@ fun GastoPredioagregar(modifier: Modifier = Modifier) {
             ) {
                 Rectangle45(modifier = Modifier.rowWeight(1.0f).columnWeight(1.0f))
                 Boton3(
-                    modifier = Modifier.boxAlign(
+                    modifier = Modifier
+                        .boxAlign(
                         alignment = Alignment.Center,
                         offset = DpOffset(
                             x = 0.0.dp,

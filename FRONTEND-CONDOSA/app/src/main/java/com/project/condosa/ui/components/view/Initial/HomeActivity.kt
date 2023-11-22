@@ -150,7 +150,6 @@ var selectedOptionIndexPeriodo : Int= -1
  @Composable
 fun View(
      navController: NavController,
-
      lifecycleScope : CoroutineScope?=null,
      modifier: Modifier = Modifier
 )

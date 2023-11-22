@@ -43,9 +43,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.project.condosa.domain.model.GastoPredio
 import com.project.condosa.domain.model.TipoGastoPredio
+import com.project.condosa.ui.components.view.GastoPredioAgregar.GastoPredioagregar
+import com.project.condosa.ui.components.view.GastoPredioEditar.GastoPredioeditar
+import okhttp3.Request
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -53,6 +57,8 @@ fun GastosPredio(
     navController: NavController,
     name: String, period: String
 ) {
+    var showDialogAgregar by remember { mutableStateOf(false) }
+    var showDialogEditar by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -222,10 +228,14 @@ fun GastosPredio(
                                     modifier = Modifier.weight(1.5f)
                                 )
                                 Icon(
+                                    modifier = Modifier.clickable { showDialogEditar = true },
                                     imageVector = Icons.Default.Edit,
                                     contentDescription = "Editar",
                                     tint = Color(0xFF000080)
                                 )
+                                if (showDialogEditar) {
+                                    VentanaEditarGasto(onDismiss = { showDialogEditar = false })
+                                }
                             }
                         }
                     }
@@ -243,7 +253,7 @@ fun GastosPredio(
             ) {
             //Boton para añadir gastos
             Button(
-                onClick = { /* Acciones */ },
+                onClick = { showDialogAgregar = true },
                 contentPadding = PaddingValues(horizontal = 9.dp, vertical = 8.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
                 modifier = Modifier.padding(top = 8.dp),
@@ -255,7 +265,9 @@ fun GastosPredio(
                     Text("Añadir gasto", color = Color.White,fontFamily = poppins,)
                 }
             }
-
+            if (showDialogAgregar) {
+                VentanaRegistrarGasto(onDismiss = { showDialogAgregar = false })
+            }
             // Botón de Descargar
             Button(
                 onClick = {
@@ -338,6 +350,19 @@ fun tipoGastomonto(cantidadElementos: Int): List<Int> {
         90 + (Math.random() * (350 - 90)).toInt()
     }
     return gastosMonto
+}
+@Composable
+fun VentanaRegistrarGasto(onDismiss: () -> Unit){
+    Dialog(onDismissRequest = {onDismiss()}){
+        GastoPredioagregar()
+    }
+}
+
+@Composable
+fun VentanaEditarGasto(onDismiss: () -> Unit){
+    Dialog(onDismissRequest = {onDismiss()}){
+        GastoPredioeditar()
+    }
 }
 /*
 @Preview(widthDp = 360, heightDp = 640)
