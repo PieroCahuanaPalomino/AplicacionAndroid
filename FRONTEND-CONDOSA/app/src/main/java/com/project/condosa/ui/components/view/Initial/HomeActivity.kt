@@ -177,10 +177,8 @@ fun View(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        lifecycleScope?.launch(Dispatchers.IO) {
             try {
                 val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
-                withContext(Dispatchers.Main) {
                     if (responsePredios.isSuccessful) {
                         val apiResponse = responsePredios.body()
                         val success = apiResponse?.success ?: false
@@ -191,7 +189,7 @@ fun View(
                         Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
                             .show()
                     }
-                }
+
             } catch (e: Exception) {
                 // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
                 withContext(Dispatchers.Main) {
@@ -199,7 +197,6 @@ fun View(
                         .show()
                 }
             }
-        }
     }
     Column(
         modifier = modifier.run {
