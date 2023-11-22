@@ -173,11 +173,11 @@ fun VerDatos(navController: NavController,
                     }
 
 
+
                     val tipoGastomonto = tipoGastomonto(casasLista.size)
 
 
-
-                        LazyColumn(
+                    LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .width(400.dp) // Establece el ancho deseado para la tabla
