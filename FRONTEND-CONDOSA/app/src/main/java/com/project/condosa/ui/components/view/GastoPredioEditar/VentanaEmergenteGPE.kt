@@ -30,7 +30,6 @@ import com.google.relay.compose.RelayImage
 import com.google.relay.compose.RelayText
 import com.google.relay.compose.RelayVector
 import com.project.condosa.R
-import com.project.condosa.ui.components.view.GastoPredioAgregar.Rectangle52
 
 @Composable
 fun GastoPredioeditar(modifier: Modifier = Modifier) {
