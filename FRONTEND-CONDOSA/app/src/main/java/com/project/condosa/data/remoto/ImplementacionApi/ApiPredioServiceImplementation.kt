@@ -2,6 +2,7 @@ package com.project.condosa.data.remoto.ImplementacionApi
 
 
 import com.project.condosa.data.remoto.ObjectRetrofit.RetrofitClient
+import com.project.condosa.domain.model.ApiResponseCasa
 import com.project.condosa.domain.model.ApiResponsePredio
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
 import com.project.condosa.domain.model.ApiResponsePredioSingle
@@ -26,4 +27,10 @@ class ApiPredioServiceImplementation {
         val response : Response <ApiResponsePredioSingle> = apiPredioService.getPredio(id);
         return response;
     }
+
+    suspend fun getCasas(id:Int): Response<ApiResponseCasa>{
+        val response : Response <ApiResponseCasa> = apiPredioService.getCasa(id);
+        return response;
+    }
+
 }

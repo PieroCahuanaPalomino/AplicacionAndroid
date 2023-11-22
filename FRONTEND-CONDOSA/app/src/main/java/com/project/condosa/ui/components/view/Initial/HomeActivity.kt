@@ -85,14 +85,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
+import com.project.condosa.domain.model.ApiResponseCasa
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
 import com.project.condosa.domain.model.ApiResponsePredioSingle
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
-
-var selectedOptionIndex : Int= -1
-var selectedOptionIndexPeriodo : Int= -1
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -137,8 +136,10 @@ var selectedOptionIndexPeriodo : Int= -1
 
 
 
-
-
+var globalSelectedOptionIndexPeriodo by mutableStateOf(-1)
+var globalSelectedOptionIndex by mutableStateOf(-1)
+var textCantidadCasas by mutableStateOf("-")
+var textResponsable by mutableStateOf("-")
  @Suppress("UNUSED_VARIABLE")
  @SuppressLint("CoroutineCreationDuringComposition")
  @Composable
@@ -165,11 +166,20 @@ fun View(
     var options by remember { mutableStateOf<List<String>>(emptyList()) }
     var optionsPeriodo by remember { mutableStateOf<List<String>>(emptyList()) }
     val context = LocalContext.current
+    var textNumCasas : String = "-"
+    var textResponsable: String = "-"
 
     LaunchedEffect(Unit) {
         lifecycleScope?.launch(Dispatchers.IO) {
             try {
                 val responsePredios: Response<ApiResponsePredio> = apiService.getPredios()
+
+                val idSeleccionado = selectedOptionIndex
+                val responseCasa : Response<ApiResponseCasa> =
+                    apiService.getCasas(idSeleccionado)
+
+
+
                 withContext(Dispatchers.Main) {
                     if (responsePredios.isSuccessful) {
                         val apiResponse = responsePredios.body()
@@ -177,6 +187,15 @@ fun View(
 
                         options =  apiResponse?.predios!!.map { it.predio }
 
+
+
+                        var apiResponseCasa = responseCasa.body()
+
+                        val responsable=apiResponseCasa?.casas?.firstOrNull()?.responsable
+                        val cantidadDeCasas: Int = apiResponseCasa?.casas?.size ?: 0
+
+                        textNumCasas="PIERO"
+                        textResponsable=responsable.toString()
                         // Muestra el valor de success en el Toast
                         Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
                             .show()
@@ -262,9 +281,11 @@ fun View(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        showData(lifecycleScope)
+        showData(lifecycleScope,textNumCasas)
 
         Spacer(modifier = Modifier.weight(1f))
+
+
 
         // Quinta fila con un botón centrado
         Row(
@@ -280,7 +301,11 @@ fun View(
                     .background(
                         bluePaletColor,
                         shape = RoundedCornerShape(10)
-                    ) // Establece el color de fondo del Box a bluePaletColor
+                    )
+                    .clickable {
+                        // Aquí puedes manejar el evento de clic
+                        /*globalSelectedOptionIndex= Random.nextInt(1, 101)*/
+                    }
             ) {
                 Text(
                     "Ver datos", color = Color.White,
@@ -426,41 +451,55 @@ fun View(
         }
     }
 }
-
-
+var selectedOptionIndex : Int= -1
+var selectedOptionIndexPeriodo : Int= -1
 @Composable
 fun showData(
     lifecycleScope : CoroutineScope?=null,
-    elemento: String = "-") {
+    textNumCasas: String ,
+    ) {
     val bluePaletColorLet = colorResource(id = R.color.bluePaletLet) // Obtener el color de color.xml
     val grisPaletLet = colorResource(id = R.color.grisPaletLet) // Obtener el color de color.xml
     val apiService = ApiPredioServiceImplementation()
     var responsable by remember { mutableStateOf<List<String>>(emptyList()) }
     val context = LocalContext.current
     var options by remember { mutableStateOf<List<String>>(emptyList()) }
+    var selectionMade by remember { mutableStateOf(false) } // Nueva variable de estado
 
-    LaunchedEffect(selectedOptionIndex) {
+    if(globalSelectedOptionIndex!=-1 && globalSelectedOptionIndexPeriodo!=-1){
+        LaunchedEffect(globalSelectedOptionIndex, globalSelectedOptionIndexPeriodo) {
+            Toast.makeText(context, "HOLLA", Toast.LENGTH_SHORT).show()
             try {
-                val responsePredios: Response<ApiResponsePredioSingle> = apiService.getPredio(selectedOptionIndex)
-                withContext(Dispatchers.Main) {
-                    if (responsePredios.isSuccessful) {
-                        val apiResponse = responsePredios.body()
-                        val success = apiResponse?.success ?: false
 
-                        options =  apiResponse?.predio!!.map { it.responsable }
 
-                        // Muestra el valor de success en el Toast
-                        Toast.makeText(context, "Success: $options", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-            } catch (e: Exception) {
-                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                val idSeleccionado = globalSelectedOptionIndex+1
+                val responseCasa: Response<ApiResponseCasa> =
+                    apiService.getCasas(idSeleccionado)
+
+
+                //val responseText: Response=
+                if (responseCasa.isSuccessful) {
+                    val apiResponsePeriodo = responseCasa.body()
+                    val successPeriodo = apiResponsePeriodo?.success ?: false
+
+                    var responsable = apiResponsePeriodo?.casas?.firstOrNull()?.responsable
+                    val cantidadCasas: Int = apiResponsePeriodo?.casas?.size ?: 0
+
+                    textCantidadCasas=cantidadCasas.toString()
+                    textResponsable=responsable.toString()
+                    //textNumCasas=cantidadCasas.toString()
+                    // Muestra el valor de successPeriodo en el Toast
+                    Toast.makeText(context, "Success: $globalSelectedOptionIndex", Toast.LENGTH_SHORT)
                         .show()
                 }
+
+
+            } catch (e: Exception) {
+                // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
+                Toast.makeText(context, "ErrorPeriodo: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
+        }
     }
 
     // Row para centrar horizontalmente
@@ -499,8 +538,8 @@ fun showData(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround // Espacio entre los textos
             ) {
-                Text(elemento, fontSize = 18.sp)
-                Text(elemento, fontSize = 18.sp)
+                Text(textResponsable, fontSize = 18.sp)
+                Text(textCantidadCasas, fontSize = 18.sp)
             }
             Row(
                 modifier = Modifier
@@ -543,9 +582,12 @@ fun IconWithComboBox(
         LaunchedEffect(selectedOptionIndex) {
             if (/*expanded &&*/ selectedOptionIndex != -1) {
                 try {
-                    val idSeleccionado = selectedOptionIndex
+
+
+                    val idSeleccionado = selectedOptionIndex+1
                     val responsePeriodo: Response<ApiResponsePredioPeriodo> =
                         apiService.getPrediosPeriodo(idSeleccionado)
+
 
                     //val responseText: Response=
                     if (responsePeriodo.isSuccessful) {
@@ -558,12 +600,15 @@ fun IconWithComboBox(
                         Toast.makeText(context, "Success: $optionsPeriodo", Toast.LENGTH_SHORT)
                             .show()
                     }
+
+
                 } catch (e: Exception) {
                     // Manejar errores, por ejemplo, mostrar un mensaje de error en caso de excepción
                     Toast.makeText(context, "ErrorPeriodo: ${e.message}", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
+
         }
     }
     Row(
@@ -681,9 +726,10 @@ fun IconWithComboBox(
                                             // Actualiza el estado cuando se hace clic en el RadioButton
                                             selectedOption = option
                                             selectedOptionIndexPeriodo = index
-
+                                            globalSelectedOptionIndexPeriodo = index
                                         }
                                     )
+
                                     Text(option, modifier = Modifier.padding(start = 8.dp))
                                 }
                             }
@@ -704,12 +750,14 @@ fun IconWithComboBox(
                                             // Actualiza el estado cuando se hace clic en el RadioButton
                                             selectedOption = option
                                             selectedOptionIndex = index
+                                            globalSelectedOptionIndex = index
                                         }
                                     )
                                     Text(option, modifier = Modifier.padding(start = 8.dp))
                                 }
                             }
                         }
+
                     }
 
                 }
@@ -731,3 +779,13 @@ fun IconWithComboBox(
         }
     }
 }
+@Composable
+fun ShowToastOnIndexChange(selectedIndex: Int) {
+    val context = LocalContext.current
+
+    LaunchedEffect(selectedIndex) {
+            Toast.makeText(context, "HOLLA", Toast.LENGTH_SHORT).show()
+
+    }
+}
+
