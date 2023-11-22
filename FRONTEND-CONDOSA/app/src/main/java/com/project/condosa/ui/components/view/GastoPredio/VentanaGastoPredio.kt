@@ -3,6 +3,7 @@ package com.project.condosa.ui.components.view.GastoPredio
 import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoPredioImplementacion
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Share
@@ -41,13 +43,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.project.condosa.domain.model.GastoPredio
 import com.project.condosa.domain.model.TipoGastoPredio
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GastosPredio(
-    modifier: Modifier = Modifier,
+    navController: NavController,
     name: String, period: String
 ) {
 
@@ -56,22 +59,34 @@ fun GastosPredio(
             .fillMaxSize()
             .background(Color(0xFFF6F8FF))
     ) {
-
         // Encabezado de la aplicación
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color(0xFF000080))
         ) {
-            Text(
-                text = "Gasto del Predio",
-                fontSize = 20.sp,
-                fontFamily = poppins,
-                color = Color.White,
-                modifier = Modifier.padding(start = 27.dp, top = 24.dp, bottom = 20.dp)
-            )
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 27.dp, top = 20.dp, bottom = 20.dp)
+            ){
+                Icon(imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Boton Atras",
+                    tint = Color.White,
+                    modifier = Modifier.clickable {
+                        navController.popBackStack()
+                    })
+                Text(
+                    text = "Gasto del Predio",
+                    fontSize = 20.sp,
+                    fontFamily = poppins,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 15.dp)
+                )
+            }
         }
-
+        // Fin Encabezado
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -324,11 +339,11 @@ fun tipoGastomonto(cantidadElementos: Int): List<Int> {
     }
     return gastosMonto
 }
-
+/*
 @Preview(widthDp = 360, heightDp = 640)
 @Composable
-private fun GastosPredioPreview() {
+private fun GastosPredioPreview(navController: NavController,) {
     MaterialTheme {
         GastosPredio(name="Los Rosales", period = "2023-I")
     }
-}
+}*/

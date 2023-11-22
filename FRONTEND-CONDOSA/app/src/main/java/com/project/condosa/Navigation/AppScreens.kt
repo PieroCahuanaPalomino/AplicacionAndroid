@@ -1,0 +1,7 @@
+package com.project.condosa.Navigation
+
+sealed class AppScreens(val route: String){
+    object HomeActivity: AppScreens("HomeActivity")
+    object VentanaGastoPredio: AppScreens("VentanaGastoPredio")
+
+}

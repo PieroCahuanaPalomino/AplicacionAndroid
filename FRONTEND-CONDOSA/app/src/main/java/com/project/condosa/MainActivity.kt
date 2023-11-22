@@ -3,7 +3,6 @@ package com.project.condosa
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,22 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
-import com.project.condosa.data.remoto.ObjectRetrofit.RetrofitClient
-import com.project.condosa.data.remoto.api.SupperHeroResponse
-import com.project.condosa.domain.model.ApiResponsePredio
-import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
+import com.project.condosa.Navigation.AppNavigation
 import com.project.condosa.ui.components.view.GastoPredioAgregar.GastoPredioagregar
-import com.project.condosa.ui.components.view.GastoPredioEditar.GastoPredioeditar
-import com.project.condosa.ui.components.view.Gastos_casa.GastosContent
-import com.project.condosa.ui.components.view.Gastos_casa.ViewGastos
 import com.project.condosa.ui.theme.CondosaTheme
-import com.project.condosa.ui.components.view.Initial.HomeContent // Reemplaza "your.package.name" con el nombre real de tu paquete
-import com.project.condosa.ui.components.view.Initial.View // Reemplaza "your.package.name" con el nombre real de tu paquete
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 
 class MainActivity : ComponentActivity() {
@@ -51,12 +37,12 @@ class MainActivity : ComponentActivity() {
                     //HomeContent("user@email.com", "Some Provider")
                     //View("User Name", "user@email.com", "Some Provider")
                     //GastosPredio(name="Los Rosales", period = "2023-I")
-                    GastoPredioagregar()
+                    //GastoPredioagregar()
 
-                    HomeContent("user@email.com", "Some Provider")
-                    View("User Name", "user@email.com", "Some Provider",lifecycleScope)
+                    //HomeContent("user@email.com", "Some Provider")
+                    //View("User Name", "user@email.com", "Some Provider",lifecycleScope)
                     //GastosPredio(name="Los Rosales", period = "2023-I")
-
+                    AppNavigation()
                 }
             }
         }
@@ -76,17 +62,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     CondosaTheme {
-        Greeting("Android")
+
         //LO PONEN ENCOMENTARIOS Y PONEN SUS CODIGOS
 
         //HomeContent("user@email.com", "Some Provider")
         //View("User Name", "user@email.com", "Some Provider")
         //GastosPredio(name="Los Rosales", period = "2023-I")
-        GastoPredioagregar()
+        //GastoPredioagregar()
 
-        HomeContent("user@email.com", "Some Provider")
-        View("User Name", "user@email.com", "Some Provider")
+        //HomeContent("user@email.com", "Some Provider")
+        //View("User Name", "user@email.com", "Some Provider")
         //GastosPredio(name="Los Rosales", period = "2023-I")
-
+        AppNavigation()
     }
 }

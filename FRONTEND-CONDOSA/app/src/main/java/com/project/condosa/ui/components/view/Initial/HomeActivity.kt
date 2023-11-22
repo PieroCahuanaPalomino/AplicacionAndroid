@@ -67,7 +67,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.lifecycleScope
 import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.project.condosa.R
-import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
+
 import com.project.condosa.domain.model.ApiResponsePredio
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -81,12 +81,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import com.project.condosa.Navigation.AppScreens
+import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
 import com.project.condosa.domain.model.ApiResponsePredioSingle
+import com.project.condosa.ui.components.view.GastoPredio.poppins
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
@@ -94,7 +100,7 @@ import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWi
 var selectedOptionIndex : Int= -1
 var selectedOptionIndexPeriodo : Int= -1
 
-
+/*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     fun HomeContent(email: String?, provider: String?) {
@@ -133,7 +139,7 @@ var selectedOptionIndexPeriodo : Int= -1
             }
         )
     }
-
+*/
 
 
 
@@ -143,13 +149,17 @@ var selectedOptionIndexPeriodo : Int= -1
  @SuppressLint("CoroutineCreationDuringComposition")
  @Composable
 fun View(
-    name: String,
-    email: String?,
-    provider: String?,
-    lifecycleScope : CoroutineScope?=null,
-    modifier: Modifier = Modifier
+     navController: NavController,
+
+     lifecycleScope : CoroutineScope?=null,
+     modifier: Modifier = Modifier
 )
 {
+    val email = "emailprueba@gmail.com"
+    /*
+    name: String,
+    email: String?,
+    provider: String?,*/
     val iconResourceIdHome: Int =
         R.drawable.home  // Asigna el valor correcto del recurso de icono
     val iconResourceIdCalendar: Int =
@@ -194,12 +204,33 @@ fun View(
     Column(
         modifier = modifier.run {
             var background = fillMaxWidth()
-                .padding(top = 55.dp)
                 .background(fonPantalla)
             background
 
         }
     ) {
+        // Encabezado de la aplicación
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF000080))
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 27.dp, top = 20.dp, bottom = 20.dp)
+            ){
+                Text(
+                    text = "Emitir Recibo",
+                    fontSize = 20.sp,
+                    fontFamily = poppins,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 15.dp)
+                )
+            }
+        }
+        // Fin Encabezado
         Column(
             modifier = Modifier
                 .padding(8.dp)
@@ -303,6 +334,9 @@ fun View(
             ) {
                 Box(
                     modifier = Modifier
+                        .clickable {
+                            navController.navigate(route = AppScreens.VentanaGastoPredio.route + "/LosCerezos/2023")
+                         }
                         .weight(2f) // Peso del 66.67% (2/3)
                         .fillMaxWidth()
                         .fillMaxHeight() // Ocupa toda la altura del Column
@@ -311,7 +345,7 @@ fun View(
                             bluePaletColor,
                             shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
                         ),
-                    contentAlignment = Alignment.Center
+                    //contentAlignment = Alignment.Center
                 ) {
                     Text(
                         "Registrar gastos del predio",
