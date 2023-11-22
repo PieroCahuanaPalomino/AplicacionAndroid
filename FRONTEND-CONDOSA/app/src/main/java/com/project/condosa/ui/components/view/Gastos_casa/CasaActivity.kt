@@ -27,6 +27,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
@@ -54,6 +55,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.project.condosa.R
 import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoCasaImplementacion
 import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoPredioImplementacion
@@ -111,12 +113,10 @@ fun GastosContent(email: String?, provider: String?) {
 
 @Composable
 fun ViewGastos(
-    name: String,
-    email: String?,
-    provider: String?,
+    navController: NavController,name: String,
     modifier: Modifier = Modifier,
-
     ) {
+    val email = "emailprueba@gmail.com"
     val iconResourceNCasa: Int =
         R.drawable.gastos_casas_vector1  // Asigna el valor correcto del recurso de icono
 
@@ -131,17 +131,44 @@ fun ViewGastos(
     Column(
         modifier = modifier.run {
             var background = fillMaxWidth()
-                .padding(top = 55.dp)
                 .background(fonPantalla)
             background
 
         }
     ) {
+        // Encabezado de la aplicación
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF000080))
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 27.dp, top = 20.dp, bottom = 20.dp)
+            ){
+                androidx.compose.material3.Icon(imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Boton Atras",
+                    tint = Color.White,
+                    modifier = Modifier.clickable {
+                        navController.popBackStack()
+                    })
+                androidx.compose.material3.Text(
+                    text = "Gasto Casas",
+                    fontSize = 20.sp,
+                    fontFamily = poppins,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 15.dp)
+                )
+            }
+        }
+        // Fin Encabezado
         Column(modifier = Modifier
             .padding(8.dp)
             .padding(start = 45.dp)) {
             Text(
-                text = "Lomas Tingo",
+                text = name,
                 fontSize = 20.sp,
                 modifier = Modifier.padding(bottom = 8.dp),
                 color = bluePaletColor,

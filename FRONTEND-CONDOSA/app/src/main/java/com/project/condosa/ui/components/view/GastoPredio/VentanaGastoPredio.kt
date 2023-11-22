@@ -2,6 +2,9 @@ package com.project.condosa.ui.components.view.GastoPredio
 
 import com.project.condosa.data.remoto.ImplementacionAPI.APIGastoPredioImplementacion
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.pdf.PdfDocument
+import android.os.Environment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +40,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +55,9 @@ import com.project.condosa.domain.model.TipoGastoPredio
 import com.project.condosa.ui.components.view.GastoPredioAgregar.GastoPredioagregar
 import com.project.condosa.ui.components.view.GastoPredioEditar.GastoPredioeditar
 import okhttp3.Request
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -271,7 +279,7 @@ fun GastosPredio(
             // Botón de Descargar
             Button(
                 onClick = {
-                    /* Acción para descargar */
+
                 },
                 contentPadding = PaddingValues(all = 2.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFFFFFFFF)),
@@ -364,6 +372,7 @@ fun VentanaEditarGasto(onDismiss: () -> Unit){
         GastoPredioeditar()
     }
 }
+
 /*
 @Preview(widthDp = 360, heightDp = 640)
 @Composable

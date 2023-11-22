@@ -1,7 +1,6 @@
 package com.project.condosa.ui.components.view.Initial
 
 import android.annotation.SuppressLint
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -11,137 +10,58 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.TextButton
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.lifecycleScope
-import com.google.relay.compose.RowScopeInstanceImpl.align
 import com.project.condosa.R
-
 import com.project.condosa.domain.model.ApiResponsePredio
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import retrofit2.Response
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.project.condosa.Navigation.AppScreens
 import com.project.condosa.data.remoto.ImplementacionApi.ApiPredioServiceImplementation
 import com.project.condosa.domain.model.ApiResponseCasa
 import com.project.condosa.domain.model.ApiResponsePredioPeriodo
-import com.project.condosa.domain.model.ApiResponsePredioSingle
 import com.project.condosa.ui.components.view.GastoPredio.poppins
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.project.condosa.ui.components.view.Initial.IconWithComboBox as IconWithComboBox
-
-/*
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-    @Composable
-    fun HomeContent(email: String?, provider: String?) {
-        val bluePaletColor = colorResource(id = R.color.bluePalet) // Obtener el color de color.xml
-    
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center // Centrar horizontalmente
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.arrow),
-                                contentDescription = null,
-                                tint = Color.White
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "Emitir Recibos",
-                                color = Color.White
-                            )
-                        }
-                    },
-                    backgroundColor = bluePaletColor // Usar el color definido en color.xml
-                )
-            },
-            content = {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    Spacer(modifier = Modifier.height(56.dp)) // 56dp es la altura de la barra azul
-                }
-            }
-        )
-    }
-*/
-
-
-
-
 
  @Suppress("UNUSED_VARIABLE")
  @SuppressLint("CoroutineCreationDuringComposition")
@@ -402,6 +322,10 @@ fun View(
             ) {
                 Box(
                     modifier = Modifier
+                        .clickable {
+                            selectOptionGlobal
+                            navController.navigate(route = "${AppScreens.Gasto_casa.route}/$selectOptionGlobal")
+                        }
                         .weight(2f) // Peso del 66.67% (2/3)
                         .fillMaxWidth()
                         .fillMaxHeight() // Ocupa toda la altura del Column

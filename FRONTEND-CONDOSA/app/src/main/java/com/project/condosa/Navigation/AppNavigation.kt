@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
+import com.project.condosa.ui.components.view.Gastos_casa.ViewGastos
 import com.project.condosa.ui.components.view.Initial.VerDatos
 import com.project.condosa.ui.components.view.Initial.View
 
@@ -34,6 +35,16 @@ fun AppNavigation(){
         composable(route =  AppScreens.VerDatos.route){
             VerDatos(
                 navController = navController
+            )
+        }
+        composable(route = AppScreens.Gasto_casa.route + "/{name}",
+            arguments = listOf(
+                navArgument(name="name"){type = NavType.StringType}
+            )){backStackEntry ->
+
+            ViewGastos(
+                navController,
+                name = backStackEntry.arguments?.getString("name")?: ""
             )
         }
     }
