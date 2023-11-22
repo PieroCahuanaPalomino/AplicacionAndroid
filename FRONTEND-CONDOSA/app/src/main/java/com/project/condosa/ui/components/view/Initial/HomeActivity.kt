@@ -303,6 +303,9 @@ fun View(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
+                    .clickable {
+                        navController.navigate(route = AppScreens.VerDatos.route)
+                    }
                     .fillMaxWidth()
                     .heightIn(72.dp)
                     .padding(8.dp)

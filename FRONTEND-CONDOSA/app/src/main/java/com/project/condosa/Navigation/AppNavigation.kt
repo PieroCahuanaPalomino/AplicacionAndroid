@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.project.condosa.ui.components.view.GastoPredio.GastosPredio
+import com.project.condosa.ui.components.view.Initial.VerDatos
 import com.project.condosa.ui.components.view.Initial.View
 
 @Composable
@@ -28,6 +29,11 @@ fun AppNavigation(){
                 navController,
                 name = backStackEntry.arguments?.getString("name")?: "",
                 period = backStackEntry.arguments?.getString("period")?: ""
+            )
+        }
+        composable(route =  AppScreens.VerDatos.route){
+            VerDatos(
+                navController = navController
             )
         }
     }
